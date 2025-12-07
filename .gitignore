@@ -1,0 +1,10 @@
+.project
+.pydevproject
+.settings/
+
+__pycache__/
+
+test/
+report/
+conftest.py
+pytest.ini
