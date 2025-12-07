@@ -6,6 +6,18 @@ from typing import Literal
 class SoftAssertionError(Exception): ...
 
 
+class _ExcInfo:
+    def __init__(self):
+        self.type = None
+        self.value = None
+        self.traceback = None
+
+    def update(self, e: Exception):
+        self.type = type(e)
+        self.value = e
+        self.traceback = e.__traceback__
+
+
 class SoftAssert:
 
     def __init__(self, failure_mode = "xfail"):
@@ -15,6 +27,17 @@ class SoftAssert:
 
     def setFailureMode(self, mode: Literal['fail', 'xfail']):
         self.failure_mode = mode
+
+    def assert_all(self):
+        if self.already_failed:
+            return 
+        if self.errors:
+            msg = "\n".join(self.errors)
+            self.already_failed = True
+            if self.failure_mode == "fail":
+                raise SoftAssertionError(msg)
+            else:
+                pytest.xfail(reason=msg)
 
     # Method-style assertion
     def check(self, condition, msg=None):
@@ -32,35 +55,24 @@ class SoftAssert:
         self.assert_all()
         return True
 
-    # -----------------------
-    # Soft raise context manager
-    # -----------------------
+    # raise context manager
     @contextmanager
     def raises(self, expected_exception, msg=None):
         """Softly assert that a block raises `expected_exception`."""
+        excinfo = _ExcInfo()
         try:
-            yield
+            yield excinfo
         except expected_exception as e:
             # Correct exception was raised → do nothing
-            pass
+            excinfo.update(e)
         except Exception as e:
             # Wrong exception type → record as soft failure
             self.errors.append(
                 msg or f"Expected {expected_exception.__name__}, got {type(e).__name__}: {e}"
             )
+            excinfo.update(e)
         else:
             # No exception was raised → record as soft failure
             self.errors.append(
-                msg or f"Expected {expected_exception.__name__} to be raised, but nothing was raised"
+                msg or f"Expected {expected_exception.__name__}, but nothing was raised"
             )
-
-    def assert_all(self):
-        if self.already_failed:
-            return 
-        if self.errors:
-            msg = "\n".join(self.errors)
-            self.already_failed = True
-            if self.failure_mode == "fail":
-                raise SoftAssertionError(msg)
-            else:
-                pytest.xfail(msg)
