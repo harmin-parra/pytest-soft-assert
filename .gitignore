@@ -1,8 +1,10 @@
 .project
 .pydevproject
 .settings/
+.venv
 
 __pycache__/
+/.pytest_cache/
 
 dist/
 
@@ -10,4 +12,4 @@ test/
 report/
 conftest.py
 pytest.ini
-/.pytest_cache/
+

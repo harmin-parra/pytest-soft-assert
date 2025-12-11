@@ -106,7 +106,7 @@ html_static_path = ['.']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pytest-soft-assert-autodoc'
+htmlhelp_basename = f'${project}-autodoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -133,7 +133,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pytest-soft-assert.tex', 'pytest-soft-assert Documentation',
+    (master_doc, f'${project}.tex', f'${project} Documentation',
      'Harmin Parra Rueda', 'manual'),
 ]
 
@@ -143,7 +143,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pytest-soft-assert', 'pytest-soft-assert Documentation',
+    (master_doc, f'${project}', f'${project} Documentation',
      [author], 1)
 ]
 
@@ -154,8 +154,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pytest-soft-assert', 'pytest-soft-assert Documentation',
-     author, 'pytest-soft-assert', 'One line description of project.',
+    (master_doc, f'${project}', f'${project} Documentation',
+     author, f'${project}', 'One line description of project.',
      'Miscellaneous'),
 ]
 
