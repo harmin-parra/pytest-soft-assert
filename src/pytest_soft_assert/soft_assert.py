@@ -25,7 +25,7 @@ class SoftAssert:
         self.already_failed = False
         self.failure_mode = failure_mode
 
-    def setFailureMode(self, mode: Literal['fail', 'xfail']):
+    def set_failure_mode(self, mode: Literal['fail', 'xfail']):
         self.failure_mode = mode
 
     def assert_all(self):

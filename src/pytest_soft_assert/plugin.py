@@ -1,6 +1,6 @@
 import pytest
-from _pytest._code.code import ExceptionInfo
-from .soft_assert import SoftAssert, SoftAssertionError
+from .soft_assert import SoftAssert
+from . import update_test_status
 
 
 #
@@ -16,17 +16,17 @@ def pytest_addoption(parser):
 
 
 #
-# Fixtures
+# Fixture
 #
-@pytest.fixture(scope="session")
-def _fx_soft_assert_mode(request):
+def _fx_soft_assert_mode(config):
     """ The mode soft assertion should fail """
-    return request.config.getini("soft_assert_mode")
+    value = config.getini("soft_assert_mode")
+    return value if value in ('fail', 'xfail') else 'xfail'
 
 
 @pytest.fixture(scope="function")
-def soft(_fx_soft_assert_mode):
-    return SoftAssert(_fx_soft_assert_mode)
+def soft(request):
+    return SoftAssert(_fx_soft_assert_mode(request.config))
 
 
 #
@@ -37,24 +37,5 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
 
-    if call.when == "call" and "soft" in item.funcargs:
-        try:
-            feature_request = item.funcargs["request"]
-            fx_soft = feature_request.getfixturevalue("soft")
-        except pytest.FixtureLookupError:
-            return
-        msg = "\n".join(fx_soft.errors)
-        exc = SoftAssertionError(msg)
-        excinfo = ExceptionInfo.from_exc_info((type(exc), exc, exc.__traceback__))
-        if fx_soft.errors:
-            if fx_soft.already_failed and fx_soft.failure_mode == "xfail":
-                call.excinfo = excinfo
-            if not fx_soft.already_failed:
-                report.longrepr = msg
-                call.excinfo = excinfo
-                fx_soft.already_failed = True
-                if fx_soft.failure_mode == "fail":
-                    report.outcome = "failed"
-                else:
-                    report.outcome = "skipped"
-                    report.wasxfail = msg
+    report = update_test_status(report, item, call)
+    outcome.force_result(report)
