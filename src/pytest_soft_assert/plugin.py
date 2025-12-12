@@ -15,15 +15,15 @@ def pytest_addoption(parser):
     )
 
 
-#
-# Fixture
-#
 def _fx_soft_assert_mode(config):
     """ The mode soft assertion should fail """
     value = config.getini("soft_assert_mode")
     return value if value in ('fail', 'xfail') else 'xfail'
 
 
+#
+# Fixture
+#
 @pytest.fixture(scope="function")
 def soft(request):
     return SoftAssert(_fx_soft_assert_mode(request.config))
@@ -36,6 +36,5 @@ def soft(request):
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
-
     report = update_test_status(report, item, call)
     outcome.force_result(report)

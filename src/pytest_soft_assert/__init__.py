@@ -15,7 +15,6 @@ def update_test_status(report: pytest.TestReport, item, call) -> pytest.TestRepo
         excinfo = ExceptionInfo.from_exc_info((type(exc), exc, exc.__traceback__))
         if fx_soft.errors:
             if fx_soft.already_failed and fx_soft.failure_mode == "xfail":
-                print("I entered here")
                 call.excinfo = excinfo
                 report.wasxfail = msg
                 report.outcome = "skipped"

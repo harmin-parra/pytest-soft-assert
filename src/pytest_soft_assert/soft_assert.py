@@ -23,10 +23,11 @@ class SoftAssert:
     def __init__(self, failure_mode = "xfail"):
         self.errors = []
         self.already_failed = False
-        self.failure_mode = failure_mode
+        self.set_failure_mode(failure_mode)
 
     def set_failure_mode(self, mode: Literal['fail', 'xfail']):
-        self.failure_mode = mode
+        if mode in ('fail', 'xfail'):
+            self.failure_mode = mode
 
     def assert_all(self):
         if self.already_failed:
