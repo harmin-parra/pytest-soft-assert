@@ -38,10 +38,10 @@ class SoftAssert:
             if self.failure_mode == "fail":
                 raise SoftAssertionError(msg)
             else:
-                pytest.xfail(reason=msg)
+                pytest.xfail('SoftAssertionError')
 
     # Method-style assertion
-    def check(self, condition, msg=None):
+    def verify(self, condition, msg=None):
         if not condition:
             self.errors.append(msg or "Soft assertion failed")
 
