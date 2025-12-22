@@ -1,21 +1,8 @@
 import pytest
+from _pytest._code import ExceptionInfo
 from contextlib import contextmanager
 from typing import Literal
-
-
-class SoftAssertionError(Exception): ...
-
-
-class _ExcInfo:
-    def __init__(self):
-        self.type = None
-        self.value = None
-        self.traceback = None
-
-    def update(self, e: Exception):
-        self.type = type(e)
-        self.value = e
-        self.traceback = e.__traceback__
+from .exception import SoftAssertionError, _ExcInfo
 
 
 class SoftAssert:
@@ -25,23 +12,26 @@ class SoftAssert:
         self.already_failed = False
         self.set_failure_mode(failure_mode)
 
-    def set_failure_mode(self, mode: Literal['fail', 'xfail']):
+    def set_failure_mode(self, mode: Literal['fail', 'xfail']) -> None:
         if mode in ('fail', 'xfail'):
             self.failure_mode = mode
 
-    def assert_all(self):
+    def get_excinfo(self) -> ExceptionInfo:
+        exc = SoftAssertionError('\n'.join(self.errors))
+        return ExceptionInfo.from_exc_info((type(exc), exc, ''))
+
+    def assert_all(self) -> None:
         if self.already_failed:
             return 
         if self.errors:
-            msg = "\n".join(self.errors)
             self.already_failed = True
             if self.failure_mode == "fail":
-                raise SoftAssertionError(msg)
+                pytest.fail()
             else:
-                pytest.xfail('SoftAssertionError')
+                pytest.xfail()
 
     # Method-style assertion
-    def verify(self, condition, msg=None):
+    def verify(self, condition, msg=None) -> None:
         if not condition:
             self.errors.append(msg or "Soft assertion failed")
 
