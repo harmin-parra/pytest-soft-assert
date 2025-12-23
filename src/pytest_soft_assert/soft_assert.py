@@ -1,5 +1,4 @@
 import pytest
-from _pytest._code import ExceptionInfo
 from contextlib import contextmanager
 from typing import Literal
 from .exception import SoftAssertionError, _ExcInfo
@@ -7,25 +6,25 @@ from .exception import SoftAssertionError, _ExcInfo
 
 class SoftAssert:
 
-    def __init__(self, failure_mode = "xfail"):
+    def __init__(self, fail_mode="xfail"):
         self.errors = []
         self.already_failed = False
-        self.set_failure_mode(failure_mode)
+        self.set_fail_mode(fail_mode)
 
-    def set_failure_mode(self, mode: Literal['fail', 'xfail']) -> None:
-        if mode in ('fail', 'xfail'):
-            self.failure_mode = mode
+    def set_fail_mode(self, fail_mode: Literal['fail', 'xfail']) -> None:
+        if fail_mode in ('fail', 'xfail'):
+            self.fail_mode = fail_mode
 
-    def get_excinfo(self) -> ExceptionInfo:
+    def get_excinfo(self) -> pytest.ExceptionInfo:
         exc = SoftAssertionError('\n'.join(self.errors))
-        return ExceptionInfo.from_exc_info((type(exc), exc, ''))
+        return pytest.ExceptionInfo.from_exc_info((type(exc), exc, ''))
 
     def assert_all(self) -> None:
         if self.already_failed:
             return 
         if self.errors:
             self.already_failed = True
-            if self.failure_mode == "fail":
+            if self.fail_mode == "fail":
                 pytest.fail()
             else:
                 pytest.xfail()
