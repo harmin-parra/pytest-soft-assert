@@ -1,7 +1,7 @@
 import pytest
 from contextlib import contextmanager
 from typing import Literal
-from .exception import SoftAssertionError, _ExcInfo
+from .exception import SoftAssertionError
 
 
 class SoftAssert:
@@ -50,18 +50,18 @@ class SoftAssert:
     @contextmanager
     def raises(self, expected_exception, msg=None):
         """Soft assert that a block raises `expected_exception`."""
-        excinfo = _ExcInfo()
+        excinfo = pytest.ExceptionInfo.for_later()
         try:
             yield excinfo
         except expected_exception as e:
             # Correct exception was raised → do nothing
-            excinfo.update(e)
+            excinfo.fill_unfilled((type(e), e, e.__traceback__))
         except Exception as e:
             # Wrong exception type → record as soft failure
             self.errors.append(
                 msg or f"Expected {expected_exception.__name__}, got {type(e).__name__}: {e}"
             )
-            excinfo.update(e)
+            excinfo.fill_unfilled((type(e), e, e.__traceback__))
         else:
             # No exception was raised → record as soft failure
             self.errors.append(
