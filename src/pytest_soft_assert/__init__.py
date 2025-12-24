@@ -76,7 +76,7 @@ def _debug(
         if hasattr(report, "wasxfail"):
             print("wasxfail: ", report.wasxfail)
         if hasattr(call.excinfo, "value"):
-            print("exc.type: ",call.excinfo.type)
+            print("exc.type: ", call.excinfo.type)
             print("exc.value: ", call.excinfo.value)
             if hasattr(call.excinfo.value, "msg"):
                 print("exc.msg: ", call.excinfo.value.msg)
