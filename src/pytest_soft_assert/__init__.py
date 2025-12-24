@@ -16,12 +16,12 @@ def update_test_status(
         fx_soft: SoftAssert = request.getfixturevalue("soft")
     except Exception:
         return report
+    # _debug(report, item, call)
     if len(fx_soft.errors) > 0:
         report.softexcinfo = fx_soft.get_excinfo()
     if fx_soft.already_failed or len(fx_soft.errors) == 0:
         return report
 
-    # _debug(report, item, call)
     fx_soft.already_failed = True
 
     is_fail_mode = fx_soft.fail_mode == "fail"
