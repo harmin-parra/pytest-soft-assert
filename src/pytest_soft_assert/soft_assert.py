@@ -7,8 +7,9 @@ from .exception import SoftAssertionError, _ExcInfo
 class SoftAssert:
 
     def __init__(self, fail_mode="xfail"):
-        self.errors = []
-        self.already_failed = False
+        self.errors: list[str] = []
+        self.already_failed: bool = False
+        self.fail_mode: str = "xfail"
         self.set_fail_mode(fail_mode)
 
     def set_fail_mode(self, fail_mode: Literal['fail', 'xfail']) -> None:
@@ -34,21 +35,21 @@ class SoftAssert:
         if not condition:
             self.errors.append(msg or "Soft assertion failed")
 
-    # Context manager style
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        # Do NOT swallow real exceptions
-        if exc:
-            return False
-        self.assert_all()
-        return True
+    # # Context manager style assertion
+    # def __enter__(self):
+    #     return self
+    #
+    # def __exit__(self, exc_type, exc, tb):
+    #     # Do NOT swallow real exceptions
+    #     if exc:
+    #         return False
+    #     self.assert_all()
+    #     return True
 
     # raise context manager
     @contextmanager
     def raises(self, expected_exception, msg=None):
-        """Softly assert that a block raises `expected_exception`."""
+        """Soft assert that a block raises `expected_exception`."""
         excinfo = _ExcInfo()
         try:
             yield excinfo
