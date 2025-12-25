@@ -6,7 +6,7 @@ from .exception import SoftAssertionError
 
 class SoftAssert:
 
-    def __init__(self, fail_mode="xfail"):
+    def __init__(self, fail_mode: Literal['fail', 'xfail'] = "xfail"):
         self.errors: list[str] = []
         self.already_failed: bool = False
         self.fail_mode: str = "xfail"
