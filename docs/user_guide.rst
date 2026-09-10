@@ -26,7 +26,7 @@ API
 
 The function scoped fixture ``soft_assert`` provides the following methods:
 
-Method-style verifications
+Method-style verifications:
 
 .. code-block:: python
 
@@ -106,7 +106,7 @@ Method-style verifications
       msg (str): The message to display if the verification fails.
   """
 
-Raise context manager
+Raise context manager:
 
 .. code-block:: python
 
