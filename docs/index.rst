@@ -2,7 +2,7 @@
 pytest-soft-assert
 ==================
 
-Pytest plugin to enhance pytest-html reports of webtest projects by adding screenshots, comments, webpage sources and attachments.
+Pytest plugin to do soft assertions
 
 .. toctree::
    :maxdepth: 2

@@ -1,26 +1,40 @@
+import os
 import pytest
 from _pytest.outcomes import Failed, Skipped, XFailed
 from .soft_assert import SoftAssert
 from .exception import SoftAssertionError
 
 
+# DEBUG = os.getenv("PYTEST_SOFT_ASSERT_DEBUG", "false").lower() == "true"
+
+
 def update_test_status(
     report: pytest.TestReport,
     item: pytest.Item,
-    call: pytest.CallInfo
+    call: pytest.CallInfo,
+    external_call: bool = True
 ) -> pytest.TestReport:
-    if call.when != "call" or "soft" not in item.funcargs:
+    """
+    Modify the test result status according to the soft assertion verifications.
+    """
+    if call.when != "call" or "soft_assert" not in item.funcargs:
         return report
     try:
         request = item.funcargs["request"]
-        fx_soft: SoftAssert = request.getfixturevalue("soft")
+        fx_soft: SoftAssert = request.getfixturevalue("soft_assert")
     except Exception:
         return report
-    # _debug(report, item, call)
+
+    # if external_call:
+    #     _debug_message(report, "Called by another plugin\n")
+
     if len(fx_soft.errors) > 0:
         report.softexcinfo = fx_soft.get_excinfo()
     if fx_soft.already_failed or len(fx_soft.errors) == 0:
+        # _debug_message(report, "Nothing to do. Soft assertion passed or failed during test execution\n")
         return report
+
+    # _debug_before(report, item, call)
 
     fx_soft.already_failed = True
 
@@ -61,6 +75,7 @@ def update_test_status(
             if not has_wasxfail:
                 report.wasxfail = ""
 
+    # _debug_after(report, item, call)
     return report
 
 
@@ -68,21 +83,57 @@ def _debug(
     report: pytest.TestReport,
     item: pytest.Item,
     call: pytest.CallInfo
-) -> pytest.TestReport:
+) -> str:
+    debug = []
     if call.when == "call":
-        print()
-        print(item.name)
-        print("outcome: ", report.outcome)
+        debug.append(f"outcome: {report.outcome}")
         if hasattr(report, "wasxfail"):
-            print("wasxfail: ", report.wasxfail)
+            debug.append(f"wasxfail: {report.wasxfail}")
         if hasattr(call.excinfo, "value"):
-            print("exc.type: ", call.excinfo.type)
-            print("exc.value: ", call.excinfo.value)
-            if hasattr(call.excinfo.value, "msg"):
-                print("exc.msg: ", call.excinfo.value.msg)
+            debug.append(f"exc.type: {call.excinfo.type}")
+            debug.append(f"exc.value: {call.excinfo.value}")
+            if hasattr(call.excinfo.value, "output"):
+                debug.append(f"exc.msg: {call.excinfo.value.msg}")
         if item.get_closest_marker("xfail"):
-            print("mark.xfail: ", item.get_closest_marker("xfail"))
-        print()
+            debug.append(f"mark.xfail: {item.get_closest_marker('xfail')}")
+    return debug
+
+
+"""
+def _debug_message(
+    report: pytest.TestReport,
+    msg: str
+) -> None:
+    if not DEBUG:
+        return
+    current_msg = getattr(report, "soft_assert_message", None)
+    msg = msg if current_msg is None else current_msg + '\n' + msg
+    setattr(report, "soft_assert_message", msg)
+
+
+def _debug_before(
+    report: pytest.TestReport,
+    item: pytest.Item,
+    call: pytest.CallInfo
+) -> None:
+    if not DEBUG:
+        return
+    debug = _debug(report, item, call)
+    if len(debug) > 0:
+        setattr(report, "soft_assert_before_update", '\n'.join(debug))
+
+
+def _debug_after(
+    report: pytest.TestReport,
+    item: pytest.Item,
+    call: pytest.CallInfo
+) -> None:
+    if not DEBUG:
+        return
+    debug = _debug(report, item, call)
+    if len(debug) > 0:
+        setattr(report, "soft_assert_after_update", '\n'.join(debug))
+"""
 
 
 __all__ = ['update_test_status', 'SoftAssertionError']

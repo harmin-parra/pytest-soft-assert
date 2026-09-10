@@ -20,11 +20,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'pytest-soft-assert'
-copyright = '2025, Harmin Parra Rueda'
+copyright = '2026, Harmin Parra Rueda'
 author = 'Harmin Parra Rueda'
 
 # The short X.Y version
-version = '0.0'
+version = '1.0'
 # The full version, including alpha/beta/rc tags
 release = ''
 
