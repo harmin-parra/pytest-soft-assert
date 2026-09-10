@@ -26,11 +26,125 @@ API
 
 The function scoped fixture ``soft_assert`` provides the following methods:
 
+----
+
+Method-style verifications
+
+.. code-block:: python
+
+  verify(self, condition: bool, msg: str = None)
+  """
+  Verify a condition.
+  Args:
+      condition (bool): The condition to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+  equal(self, actual: object, expected: object, msg: str = None)
+  """
+  Verify two values are equals.
+  Args:
+      actual (object): The first value to compare.
+      expected (object): The second value to compare.
+      msg (str): The message to display if the verification fails.
+  """
+
+  not_equal(self, actual: object, unexpected: object, msg: str = None)
+  """
+  Verify two values are different.
+  Args:
+      actual (object): The first value to compare.
+      unexpected (object): The second value to compare.
+      msg (str): The message to display if the verification fails.
+  """
+
+  true(self, condition: bool, msg: str = None)
+  """
+  Verify a condition is true.
+  Args:
+      condition (bool): The condition to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+  false(self, condition: bool, msg: str = None)
+  """
+  Verify a condition is false.
+  Args:
+      condition (bool): The condition to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+  none(self, obj: object, msg: str = None)
+  """
+  Verify a value is None.
+  Args:
+      obj (object): The value to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+  not_none(self, obj: object, msg: str = None)
+  """
+  Verify a value is not None.
+  Args:
+      obj (object): The value to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+  instance_of(self, obj: object, clazz: type, msg=None)
+  """
+  Verify a value is an instance of class.
+  Args:
+      obj (object): The value to verify.
+      clazz (type):  The expected class-type.
+      msg (str): The message to display if the verification fails.
+  """
+
+  not_instance_of(self, obj: object, clazz: type, msg: str = None)
+  """
+  Verify a value is not an instance of class.
+  Args:
+      obj (object): The value to verify.
+      clazz (type):  The unexpected class-type.
+      msg (str): The message to display if the verification fails.
+  """
+
+----
+
+Raise context manager
+
+.. code-block:: python
+
+  raises(self, expected_exception: Exception = Exception, msg: str = None)
+  """
+  Verify that a block raises a given exception.
+  Args:
+      expected_exception (Exception): The exception to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+  does_not_raise(self, unexpected_exception: Exception = Exception, msg: str = None)
+  """
+  Verify that a block raises does not raise a given exception.
+  Args:
+      unexpected_exception (Exception): The exception to verify.
+      msg (str): The message to display if the verification fails.
+  """
+
+----
+
+To assert all collected verifications before the end of the text:
+
+.. code-block:: python
+
+  assert_all()
+  """ Verify that all supplied verifications are true. """
+
+
 To modify the soft assertion mode at runtime:
 
 .. code-block:: python
 
-  set_fail_mode(fail_mode: Literal['fail', 'xfail']) -> None
+  set_fail_mode(fail_mode: Literal['fail', 'xfail'])
   """
   Set the soft assertion mode.
   A soft_assertion failure will result in the following test status:
@@ -40,116 +154,6 @@ To modify the soft assertion mode at runtime:
       fail_mode (str): The soft assertion mode. Possible values: 'fail' or 'xfail'.
   """
 
-To assert all collected verifications before the end of the text:
-
-.. code-block:: python
-
-  def assert_all() -> None:
-  """ Verify that all supplied verifications are true. """
-
-----
-
-Method-style verifications
-
-.. code-block:: python
-
-  def verify(self, condition: bool, msg: str = None) -> None:
-  """
-  Verify a condition.
-  Args:
-      condition (bool): The condition to verify.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def equal(self, actual: object, expected: object, msg: str = None) -> None:
-  """
-  Verify two values are equals.
-  Args:
-      actual (object): The first value to compare.
-      expected (object): The second value to compare.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def not_equal(self, actual: object, unexpected: object, msg: str = None) -> None:
-  """
-  Verify two values are different.
-  Args:
-      actual (object): The first value to compare.
-      unexpected (object): The second value to compare.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def true(self, condition: bool, msg: str = None) -> None:
-  """
-  Verify a condition is true.
-  Args:
-      condition (bool): The condition to verify.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def false(self, condition: bool, msg: str = None) -> None:
-  """
-  Verify a condition is false.
-  Args:
-      condition (bool): The condition to verify.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def none(self, obj: object, msg: str = None) -> None:
-  """
-  Verify a value is None.
-  Args:
-      obj (object): The value to verify.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def not_none(self, obj: object, msg: str = None) -> None:
-  """
-  Verify a value is not None.
-  Args:
-      obj (object): The value to verify.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def instance_of(self, obj: object, clazz: type, msg=None) -> None:
-  """
-  Verify a value is an instance of class.
-  Args:
-      obj (object): The value to verify.
-      clazz (type):  The expected class-type.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def not_instance_of(self, obj: object, clazz: type, msg: str = None) -> None:
-  """
-  Verify a value is not an instance of class.
-  Args:
-      obj (object): The value to verify.
-      clazz (type):  The unexpected class-type.
-      msg (str): The message to display if the verification fails.
-  """
-
----
-
-Raise context manager
-
-.. code-block:: python
-
-  def raises(self, expected_exception: Exception = Exception, msg: str = None):
-  """
-  Verify that a block raises a given exception.
-  Args:
-      expected_exception (Exception): The exception to verify.
-      msg (str): The message to display if the verification fails.
-  """
-
-  def does_not_raise(self, unexpected_exception: Exception = Exception, msg: str = None):
-  """
-  Verify that a block raises does not raise a given exception.
-  Args:
-      unexpected_exception (Exception): The exception to verify.
-      msg (str): The message to display if the verification fails.
-  """
 
 
 Examples
