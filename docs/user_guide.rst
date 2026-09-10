@@ -26,8 +26,6 @@ API
 
 The function scoped fixture ``soft_assert`` provides the following methods:
 
-----
-
 Method-style verifications
 
 .. code-block:: python
@@ -108,8 +106,6 @@ Method-style verifications
       msg (str): The message to display if the verification fails.
   """
 
-----
-
 Raise context manager
 
 .. code-block:: python
@@ -130,15 +126,12 @@ Raise context manager
       msg (str): The message to display if the verification fails.
   """
 
-----
-
 To assert all collected verifications before the end of the text:
 
 .. code-block:: python
 
   assert_all()
   """ Verify that all supplied verifications are true. """
-
 
 To modify the soft assertion mode at runtime:
 
@@ -155,14 +148,13 @@ To modify the soft assertion mode at runtime:
   """
 
 
-
 Examples
 ========
 
 
 Methos-style verifications:
 
-.. code-block:: bash
+.. code-block:: python
 
   def test_example_01(soft_assert):
       soft_assert.verify(5 > 0, "Verify a condition is true")
@@ -173,7 +165,7 @@ Methos-style verifications:
 
 Raise context manager:
 
-.. code-block:: bash
+.. code-block:: python
 
   def test_example_02(soft_assert):
       with soft_assert.raises(ArithmeticError) as excinfo:
@@ -183,7 +175,7 @@ Raise context manager:
 
 To assert all collected verifications before the end of the test:
 
-.. code-block:: bash
+.. code-block:: python
 
   def test_example_03(soft_assert):
       soft_assert.verify(5 > 0)
