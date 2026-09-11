@@ -174,6 +174,7 @@ Raise context manager:
   def test_example_02(soft_assert):
       with soft_assert.raises(ArithmeticError) as excinfo:
           5 / 0
+      # Examine the raised Exception (type and message)
       print("The exception type: ", excinfo.type)
       print("The exception value: ", excinfo.value)
 
@@ -182,11 +183,24 @@ To assert all collected verifications before the end of the test:
 .. code-block:: python
 
   def test_example_03(soft_assert):
-      soft_assert.verify(5 > 0)
-      soft_assert.true(x)
+      soft_assert.verify(5 < 0)
+      soft_assert.none(None)
+      # Assert verificationn and stop test execution if a verification failed.
       soft_assert.assert_all()
+      # Continue the test and other soft assertions
       soft_assert.false(False)
       soft_assert.verify(5 == 0)
+      soft_assert.assert_all()
+
+
+To modify the soft assertion mode for one particular test:
+
+.. code-block:: python
+
+  def test_example_04(soft_assert):
+	  soft_assert.set_fail_mode('xfail')
+      soft_assert.verify(5 > 0)
+      soft_assert.true(x)
 
 
 Warning
