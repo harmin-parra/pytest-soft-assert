@@ -130,7 +130,7 @@ Raise context manager
 
 ~~~~
 
-To assert all collected verifications before the end of the text:
+To assert all collected verifications before the end of the test:
 
 .. code-block:: python
 
@@ -208,7 +208,7 @@ Warning
 
 This plugin modifies the status of test results.
 
-If other plugins need to read test execution status, those plugins need to explicitly call pytest_soft_assert plugin to get the updated test result status.
+If other plugins need to read test result status, those plugins need to explicitly call **pytest_soft_assert** plugin to get the updated test result status.
 
 This is a code snippet that other plugins can include:
  
