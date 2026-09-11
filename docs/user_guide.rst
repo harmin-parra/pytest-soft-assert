@@ -26,7 +26,8 @@ API
 
 The function scoped fixture ``soft_assert`` provides the following methods:
 
-Method-style verifications:
+Method-style verifications
+--------------------------
 
 .. code-block:: python
 
@@ -106,7 +107,8 @@ Method-style verifications:
       msg (str): The message to display if the verification fails.
   """
 
-Raise context manager:
+Raise context manager
+---------------------
 
 .. code-block:: python
 
@@ -125,6 +127,8 @@ Raise context manager:
       unexpected_exception (Exception): The exception to verify.
       msg (str): The message to display if the verification fails.
   """
+
+~~~~
 
 To assert all collected verifications before the end of the text:
 
@@ -189,6 +193,7 @@ Warning
 =======
 
 This plugin modifies the status of test results.
+
 If other plugins need to read test execution status, those plugins need explicitly call pytest_soft_assert plugin to get the updated test result status.
 
 This is a code snippet that other plugins can include:
