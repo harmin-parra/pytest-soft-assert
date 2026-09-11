@@ -156,7 +156,7 @@ Examples
 ========
 
 
-Methos-style verifications:
+Method-style verifications:
 
 .. code-block:: python
 
@@ -208,7 +208,7 @@ Warning
 
 This plugin modifies the status of test results.
 
-If other plugins need to read test execution status, those plugins need explicitly call pytest_soft_assert plugin to get the updated test result status.
+If other plugins need to read test execution status, those plugins need to explicitly call pytest_soft_assert plugin to get the updated test result status.
 
 This is a code snippet that other plugins can include:
  
