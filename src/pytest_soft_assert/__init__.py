@@ -79,6 +79,18 @@ def update_test_status(
     return report
 
 
+"""
+def _debug_message(
+    report: pytest.TestReport,
+    msg: str
+) -> None:
+    if not DEBUG:
+        return
+    current_msg = getattr(report, "soft_assert_message", None)
+    msg = msg if current_msg is None else current_msg + '\n' + msg
+    setattr(report, "soft_assert_message", msg)
+
+
 def _debug(
     report: pytest.TestReport,
     item: pytest.Item,
@@ -97,18 +109,6 @@ def _debug(
         if item.get_closest_marker("xfail"):
             debug.append(f"mark.xfail: {item.get_closest_marker('xfail')}")
     return debug
-
-
-"""
-def _debug_message(
-    report: pytest.TestReport,
-    msg: str
-) -> None:
-    if not DEBUG:
-        return
-    current_msg = getattr(report, "soft_assert_message", None)
-    msg = msg if current_msg is None else current_msg + '\n' + msg
-    setattr(report, "soft_assert_message", msg)
 
 
 def _debug_before(
