@@ -198,7 +198,7 @@ To modify the soft assertion mode for one particular test:
 .. code-block:: python
 
   def test_example_04(soft_assert):
-	  soft_assert.set_fail_mode('xfail')
+      soft_assert.set_fail_mode('xfail')
       soft_assert.verify(5 > 0)
       soft_assert.true(x)
 
