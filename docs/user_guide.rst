@@ -32,6 +32,8 @@ Method-style verifications
 soft_assert.verify
 ~~~~~~~~~~~~~~~~~~
 
+  .. autofunction:: pytest_soft_assert.verify
+
 ``verify(condition: bool, msg: str = None)``
 
 Verify a condition.
