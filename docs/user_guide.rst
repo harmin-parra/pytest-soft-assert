@@ -8,17 +8,15 @@ Options
 
 These are the options that can be added to the ``pytest.ini`` file:
 
-* ``soft_assert_mode``
+.. confval:: soft_assert_mode
+   :type: ``str``
+   :default: ``fail``
 
-The soft assertion failure mode
+  The soft assertion failure mode.
 
-Accepted values:
+  * ``fail``: Failed soft assertions will trigger a **failed** test status.
 
-* ``fail``: Failed soft assertions will trigger a **failed** test status.
-
-* ``xfail``: Failed soft assertions will trigger a **xfailed** test status.
-
-Default value: ``fail``
+  * ``xfail``: Failed soft assertions will trigger a **xfailed** test status.
 
 
 API
@@ -29,127 +27,198 @@ The function scoped fixture ``soft_assert`` provides the following methods:
 Method-style verifications
 --------------------------
 
-.. code-block:: python
+soft_assert.verify(condition: bool, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  verify(self, condition: bool, msg: str = None)
-  """
   Verify a condition.
-  Args:
-      condition (bool): The condition to verify.
-      msg (str): The message to display if the verification fails.
-  """
 
-  equal(self, actual: object, expected: object, msg: str = None)
-  """
+  PARAMETERS:
+
+  * **condition**: The condition to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.verify(x > 5, "Verify variable x")
+
+soft_assert.equal(actual: object, expected: object, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify two values are equals.
-  Args:
-      actual (object): The first value to compare.
-      expected (object): The second value to compare.
-      msg (str): The message to display if the verification fails.
-  """
 
-  not_equal(self, actual: object, unexpected: object, msg: str = None)
-  """
+  PARAMETERS:
+
+  * **actual**: The first value to compare.
+  * **expected**: The second value to compare.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.equal(x, y, "Verify x == y")
+
+soft_assert.not_equal(actual: object, unexpected: object, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify two values are different.
-  Args:
-      actual (object): The first value to compare.
-      unexpected (object): The second value to compare.
-      msg (str): The message to display if the verification fails.
-  """
 
-  true(self, condition: bool, msg: str = None)
-  """
-  Verify a condition is true.
-  Args:
-      condition (bool): The condition to verify.
-      msg (str): The message to display if the verification fails.
-  """
+  PARAMETERS:
 
-  false(self, condition: bool, msg: str = None)
-  """
-  Verify a condition is false.
-  Args:
-      condition (bool): The condition to verify.
-      msg (str): The message to display if the verification fails.
-  """
+  * **actual**: The first value to compare.
+  * **expected**: The second value to compare.
+  * **msg**: The message to display if the verification fails. (*optional*)
 
-  none(self, obj: object, msg: str = None)
-  """
+  .. code-block:: python
+
+    soft_assert.not_equal(x, y, "Verify x != y")
+
+soft_assert.true(value: bool, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Verify a value is True.
+
+  PARAMETERS:
+
+  * **value**: The value to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.true(x, "Verify x is True)
+
+soft_assert.false(value: bool, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Verify a value is False.
+
+  PARAMETERS:
+
+  * **value**: The value to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.false(x, "Verify x is False)
+
+soft_assert.none(value: object, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify a value is None.
-  Args:
-      obj (object): The value to verify.
-      msg (str): The message to display if the verification fails.
-  """
 
-  not_none(self, obj: object, msg: str = None)
-  """
+  PARAMETERS:
+
+  * **value**: The value to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.none(x, "Verify x is None)
+
+soft_assert.not_none(value: object, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify a value is not None.
-  Args:
-      obj (object): The value to verify.
-      msg (str): The message to display if the verification fails.
-  """
 
-  instance_of(self, obj: object, clazz: type, msg=None)
-  """
+  PARAMETERS:
+
+  * **value**: The value to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.not_none(x, "Verify x is not None)
+
+soft_assert.instance_of(value: object, clazz: type, msg=None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify a value is an instance of class.
-  Args:
-      obj (object): The value to verify.
-      clazz (type):  The expected class-type.
-      msg (str): The message to display if the verification fails.
-  """
 
-  not_instance_of(self, obj: object, clazz: type, msg: str = None)
-  """
+  PARAMETERS:
+
+  * **value**: The value to verify.
+  * **clazz**: The expected class-type.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.instance_of(x, int, "Verify x is of type int)
+
+soft_assert.not_instance_of(value: object, clazz: type, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify a value is not an instance of class.
-  Args:
-      obj (object): The value to verify.
-      clazz (type):  The unexpected class-type.
-      msg (str): The message to display if the verification fails.
-  """
+
+  PARAMETERS:
+
+  * **value**: The value to verify.
+  * **clazz**: The unexpected class-type.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+  .. code-block:: python
+
+    soft_assert.instance_of(x, str, "Verify x is not of type str)
 
 Raise context manager
 ---------------------
 
-.. code-block:: python
+soft_assert.raises(expected_exception: Exception = Exception, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  raises(self, expected_exception: Exception = Exception, msg: str = None)
-  """
   Verify that a block raises a given exception.
-  Args:
-      expected_exception (Exception): The exception to verify.
-      msg (str): The message to display if the verification fails.
-  """
 
-  does_not_raise(self, unexpected_exception: Exception = Exception, msg: str = None)
-  """
+  PARAMETERS:
+
+  * **expected_exception**: The exception to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
+
+.. code-block:: python
+
+   with soft_assert.raises(ArithmeticError, "Verify exception"):
+       x / 0
+
+soft_assert.does_not_raise(unexpected_exception: Exception = Exception, msg: str = None)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   Verify that a block raises does not raise a given exception.
-  Args:
-      unexpected_exception (Exception): The exception to verify.
-      msg (str): The message to display if the verification fails.
-  """
 
-~~~~
+  PARAMETERS:
 
-To assert all collected verifications before the end of the test:
+  * **unexpected_exception**: The exception to verify.
+  * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
 
-  assert_all()
-  """ Verify that all supplied verifications are true. """
+   with soft_assert.does_not_raise(ArithmeticError):
+       5 / 2
 
-To modify the soft assertion mode at runtime:
+Other functions
+---------------
 
-.. code-block:: python
+soft_assert.assert_all()
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-  set_fail_mode(fail_mode: Literal['fail', 'xfail'])
-  """
-  Set the soft assertion mode.
+  Assert that all collected verifications are true.
+
+  .. code-block:: python
+
+    soft_assert.assert_all()
+
+soft_assert.set_fail_mode(fail_mode: Literal['fail', 'xfail'])
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Modify the soft assertion mode at runtime.
+
   A soft_assertion failure will result in the following test status:
-    - Failed if the soft assertion mode is 'fail'.
-    - XFailed if the soft assertion mode is 'xfail'.
-  Args:
-      fail_mode (str): The soft assertion mode. Possible values: 'fail' or 'xfail'.
-  """
+
+    - **failed** if the soft assertion mode is ``fail``.
+    - **xfailed** if the soft assertion mode is ``xfail``.
+
+  PARAMETERS:
+
+  * **fail_mode**: The soft assertion mode. Possible values: ``fail`` or ``xfail``.
+
+  .. code-block:: python
+
+    soft_assert.set_fail_mode('xfail')
 
 
 Examples
@@ -185,9 +254,9 @@ To assert all collected verifications before the end of the test:
   def test_example_03(soft_assert):
       soft_assert.verify(5 < 0)
       soft_assert.none(None)
-      # Assert verificationn and stop test execution if a verification failed.
+      # Assert verifications and stop test execution if a verification fails.
       soft_assert.assert_all()
-      # Continue the test and other soft assertions
+      # Continue the test with other soft assertions
       soft_assert.false(False)
       soft_assert.verify(5 == 0)
       soft_assert.assert_all()
@@ -208,16 +277,21 @@ Warning
 
 This plugin modifies the status of test results.
 
-If other plugins need to read test result status, those plugins need to explicitly call **pytest_soft_assert** plugin to get the updated test result status.
+If other Pytest plugins need to read test result status, those plugins need to explicitly call **pytest_soft_assert** plugin to get the updated test result status.
 
 This is a code snippet that other plugins can include:
  
 .. code-block:: python
 
-  # If pytest-soft-assert is loaded, update test result status
-  if call.when == "call" and item.config.pluginmanager.has_plugin("pytest_soft_assert"):
-      try:
-          soft_assert = item.config.pluginmanager.getplugin("pytest_soft_assert")
-          report = soft_assert.update_test_status(report, item, call)
-      except Exception:
-          pass
+  @pytest.hookimpl(hookwrapper=True)
+  def pytest_runtest_makereport(item, call):
+      outcome = yield
+      report = outcome.get_result()
+
+      # If pytest-soft-assert is loaded, update test result status
+      if call.when == "call" and item.config.pluginmanager.has_plugin("pytest_soft_assert"):
+          try:
+              soft_assert = item.config.pluginmanager.getplugin("pytest_soft_assert")
+              report = soft_assert.update_test_status(report, item, call)
+          except Exception:
+              pass
