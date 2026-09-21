@@ -65,7 +65,7 @@ soft_assert.equal
 soft_assert.not_equal(actual: object, unexpected: object, msg: str = None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: pytest_soft_assert.not_equal
+  .. autofunction:: pytest_soft_assert.not_equal
 
   Verify two values are different.
 
