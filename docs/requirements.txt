@@ -1,8 +1,8 @@
 # Defining the exact version will make sure things don't break
 furo
 myst-parser
+readthedocs-sphinx-search
 sphinx
+standard-imghdr
 #sphinx_rtd_theme
 #sphinx-press-theme
-readthedocs-sphinx-search
-standard-imghdr
