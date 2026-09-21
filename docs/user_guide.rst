@@ -14,11 +14,10 @@ These are the options that can be added to the ``pytest.ini`` file:
 
    Default value: ``fail``
 
-  The soft assertion failure mode.
+The soft assertion failure mode.
 
-  * ``fail``: Failed soft assertions will trigger a **failed** test status.
-
-  * ``xfail``: Failed soft assertions will trigger a **xfailed** test status.
+* ``fail``: Failed soft assertions will trigger a **failed** test status.
+* ``xfail``: Failed soft assertions will trigger a **xfailed** test status.
 
 
 API
@@ -50,13 +49,13 @@ soft_assert.equal
 
 ``equal(actual: object, expected: object, msg: str = None)``
 
-  Verify two values are equals.
+    Verify two values are equals.
 
-  PARAMETERS:
+    PARAMETERS:
 
-  * **actual**: The first value to compare.
-  * **expected**: The second value to compare.
-  * **msg**: The message to display if the verification fails. (*optional*)
+    * **actual**: The first value to compare.
+    * **expected**: The second value to compare.
+    * **msg**: The message to display if the verification fails. (*optional*)
 
   .. code-block:: python
 
