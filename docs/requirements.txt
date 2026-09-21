@@ -4,5 +4,5 @@ sphinx
 #sphinx_rtd_theme
 #sphinx-press-theme
 #readthedocs-sphinx-search
-#myst-parser
+myst-parser
 #standard-imghdr
