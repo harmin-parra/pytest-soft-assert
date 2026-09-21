@@ -78,154 +78,174 @@ PARAMETERS:
 
   soft_assert.not_equal(x, y, "Verify x != y")
 
-soft_assert.true(value: bool, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+soft_assert.true
+~~~~~~~~~~~~~~~~
 
-  Verify a value is True.
+``true(value: bool, msg: str = None)``
 
-  PARAMETERS:
+Verify a value is ``True``.
 
-  * **value**: The value to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+PARAMETERS:
 
-  .. code-block:: python
+* **value**: The value to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-    soft_assert.true(x, "Verify x is True)
+.. code-block:: python
 
-soft_assert.false(value: bool, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  soft_assert.true(x, "Verify x is True)
 
-  Verify a value is False.
+soft_assert.false
+~~~~~~~~~~~~~~~~~
 
-  PARAMETERS:
+``false(value: bool, msg: str = None)``
 
-  * **value**: The value to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+Verify a value is ``False``.
 
-  .. code-block:: python
+PARAMETERS:
 
-    soft_assert.false(x, "Verify x is False)
+* **value**: The value to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-soft_assert.none(value: object, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
 
-  Verify a value is None.
+  soft_assert.false(x, "Verify x is False)
 
-  PARAMETERS:
+soft_assert.none
+~~~~~~~~~~~~~~~~
 
-  * **value**: The value to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+``none(value: object, msg: str = None)``
 
-  .. code-block:: python
+Verify a value is ``None``.
 
-    soft_assert.none(x, "Verify x is None)
+PARAMETERS:
 
-soft_assert.not_none(value: object, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* **value**: The value to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-  Verify a value is not None.
+.. code-block:: python
 
-  PARAMETERS:
+  soft_assert.none(x, "Verify x is None)
 
-  * **value**: The value to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+soft_assert.not_none
+~~~~~~~~~~~~~~~~~~~~
 
-  .. code-block:: python
+``not_none(value: object, msg: str = None)``
 
-    soft_assert.not_none(x, "Verify x is not None)
+Verify a value is not ``None``.
 
-soft_assert.instance_of(value: object, clazz: type, msg=None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PARAMETERS:
 
-  Verify a value is an instance of class.
+* **value**: The value to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-  PARAMETERS:
+.. code-block:: python
 
-  * **value**: The value to verify.
-  * **clazz**: The expected class-type.
-  * **msg**: The message to display if the verification fails. (*optional*)
+  soft_assert.not_none(x, "Verify x is not None)
 
-  .. code-block:: python
+soft_assert.instance_of
+~~~~~~~~~~~~~~~~~~~~~~~
 
-    soft_assert.instance_of(x, int, "Verify x is of type int)
+``instance_of(value: object, clazz: type, msg=None)``
 
-soft_assert.not_instance_of(value: object, clazz: type, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Verify a value is an instance of class.
 
-  Verify a value is not an instance of class.
+PARAMETERS:
 
-  PARAMETERS:
+* **value**: The value to verify.
+* **clazz**: The expected class-type.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-  * **value**: The value to verify.
-  * **clazz**: The unexpected class-type.
-  * **msg**: The message to display if the verification fails. (*optional*)
+.. code-block:: python
 
-  .. code-block:: python
+  soft_assert.instance_of(x, int, "Verify x is of type int)
 
-    soft_assert.instance_of(x, str, "Verify x is not of type str)
+soft_assert.not_instance_of
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``not_instance_of(value: object, clazz: type, msg: str = None)``
+
+Verify a value is not an instance of class.
+
+PARAMETERS:
+
+* **value**: The value to verify.
+* **clazz**: The unexpected class-type.
+* **msg**: The message to display if the verification fails. (*optional*)
+
+.. code-block:: python
+
+  soft_assert.instance_of(x, str, "Verify x is not of type str)
 
 Raise context manager
 ---------------------
 
-soft_assert.raises(expected_exception: Exception = Exception, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+soft_assert.raises
+~~~~~~~~~~~~~~~~~~
 
-  Verify that a block raises a given exception.
+``raises(expected_exception: Exception = Exception, msg: str = None)``
 
-  PARAMETERS:
+Verify that a block raises a given exception.
 
-  * **expected_exception**: The exception to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+PARAMETERS:
 
-.. code-block:: python
-
-   with soft_assert.raises(ArithmeticError, "Verify exception"):
-       x / 0
-
-soft_assert.does_not_raise(unexpected_exception: Exception = Exception, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  Verify that a block raises does not raise a given exception.
-
-  PARAMETERS:
-
-  * **unexpected_exception**: The exception to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+* **expected_exception**: The exception to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
 
-   with soft_assert.does_not_raise(ArithmeticError):
-       5 / 2
+  with soft_assert.raises(ArithmeticError, "Verify exception"):
+      x / 0
+
+soft_assert.does_not_raise
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``does_not_raise(unexpected_exception: Exception = Exception, msg: str = None)``
+
+Verify that a block raises does not raise a given exception.
+
+PARAMETERS:
+
+* **unexpected_exception**: The exception to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
+
+.. code-block:: python
+
+  with soft_assert.does_not_raise(ArithmeticError):
+      5 / 2
 
 Other functions
 ---------------
 
-soft_assert.assert_all()
-~~~~~~~~~~~~~~~~~~~~~~~~
+soft_assert.assert_all
+~~~~~~~~~~~~~~~~~~~~~~
 
-  Assert that all collected verifications are true.
+``assert_all()``
 
-  .. code-block:: python
+Assert that all collected verifications are true.
 
-    soft_assert.assert_all()
+.. code-block:: python
 
-soft_assert.set_fail_mode(fail_mode: Literal['fail', 'xfail'])
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  soft_assert.assert_all()
 
-  Modify the soft assertion mode at runtime.
+soft_assert.set_fail_mode
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  A soft_assertion failure will result in the following test status:
+``set_fail_mode(fail_mode: Literal['fail', 'xfail'])``
 
-    - **failed** if the soft assertion mode is ``fail``.
-    - **xfailed** if the soft assertion mode is ``xfail``.
+Modify the soft assertion mode at runtime.
 
-  PARAMETERS:
+A soft_assertion failure will result in the following test status:
 
-  * **fail_mode**: The soft assertion mode. Possible values: ``fail`` or ``xfail``.
+* **failed** if the soft assertion mode is ``fail``.
+* **xfailed** if the soft assertion mode is ``xfail``.
 
-  .. code-block:: python
+PARAMETERS:
 
-    soft_assert.set_fail_mode('xfail')
+* **fail_mode**: The soft assertion mode. Possible values: ``fail`` or ``xfail``.
+
+.. code-block:: python
+
+  soft_assert.set_fail_mode('xfail')
 
 
 Examples
