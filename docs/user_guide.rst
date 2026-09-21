@@ -11,6 +11,7 @@ These are the options that can be added to the ``pytest.ini`` file:
 .. confval:: soft_assert_mode
 
    Type: ``str``
+
    Default value: ``fail``
 
   The soft assertion failure mode.
@@ -31,7 +32,7 @@ Method-style verifications
 soft_assert.verify
 ~~~~~~~~~~~~~~~~~~
 
-  .. autofunction:: pytest_soft_assert.verify
+  ``verify(condition: bool, msg: str = None)``
 
   Verify a condition.
 
