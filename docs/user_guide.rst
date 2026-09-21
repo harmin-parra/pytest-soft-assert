@@ -32,18 +32,18 @@ Method-style verifications
 soft_assert.verify
 ~~~~~~~~~~~~~~~~~~
 
-  ``verify(condition: bool, msg: str = None)``
+``verify(condition: bool, msg: str = None)``
 
-  Verify a condition.
+Verify a condition.
 
-  PARAMETERS:
+PARAMETERS:
 
-  * **condition**: The condition to verify.
-  * **msg**: The message to display if the verification fails. (*optional*)
+* **condition**: The condition to verify.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-  .. code-block:: python
+.. code-block:: python
 
-    soft_assert.verify(x > 5, "Verify variable x")
+  soft_assert.verify(x > 5, "Verify variable x")
 
 soft_assert.equal(actual: object, expected: object, msg: str = None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
