@@ -49,34 +49,34 @@ soft_assert.equal
 
 ``equal(actual: object, expected: object, msg: str = None)``
 
-    Verify two values are equals.
+Verify two values are equals.
 
-    PARAMETERS:
+PARAMETERS:
 
-    * **actual**: The first value to compare.
-    * **expected**: The second value to compare.
-    * **msg**: The message to display if the verification fails. (*optional*)
+* **actual**: The first value to compare.
+* **expected**: The second value to compare.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-  .. code-block:: python
+.. code-block:: python
 
-    soft_assert.equal(x, y, "Verify x == y")
+  soft_assert.equal(x, y, "Verify x == y")
 
-soft_assert.not_equal(actual: object, unexpected: object, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+soft_assert.not_equal
+~~~~~~~~~~~~~~~~~~~~~
 
-  .. autofunction:: pytest_soft_assert.not_equal
+``not_equal(actual: object, unexpected: object, msg: str = None)``
 
-  Verify two values are different.
+Verify two values are different.
 
-  PARAMETERS:
+PARAMETERS:
 
-  * **actual**: The first value to compare.
-  * **expected**: The second value to compare.
-  * **msg**: The message to display if the verification fails. (*optional*)
+* **actual**: The first value to compare.
+* **expected**: The second value to compare.
+* **msg**: The message to display if the verification fails. (*optional*)
 
-  .. code-block:: python
+.. code-block:: python
 
-    soft_assert.not_equal(x, y, "Verify x != y")
+  soft_assert.not_equal(x, y, "Verify x != y")
 
 soft_assert.true(value: bool, msg: str = None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
