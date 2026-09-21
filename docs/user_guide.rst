@@ -32,8 +32,6 @@ Method-style verifications
 soft_assert.verify
 ~~~~~~~~~~~~~~~~~~
 
-  .. autofunction:: pytest_soft_assert.verify
-
 ``verify(condition: bool, msg: str = None)``
 
 Verify a condition.
@@ -47,8 +45,10 @@ PARAMETERS:
 
   soft_assert.verify(x > 5, "Verify variable x")
 
-soft_assert.equal(actual: object, expected: object, msg: str = None)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+soft_assert.equal
+~~~~~~~~~~~~~~~~~
+
+``equal(actual: object, expected: object, msg: str = None)``
 
   Verify two values are equals.
 
@@ -64,6 +64,8 @@ soft_assert.equal(actual: object, expected: object, msg: str = None)
 
 soft_assert.not_equal(actual: object, unexpected: object, msg: str = None)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: pytest_soft_assert.not_equal
 
   Verify two values are different.
 
