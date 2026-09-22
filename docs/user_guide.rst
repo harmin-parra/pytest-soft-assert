@@ -198,7 +198,7 @@ Verify that a block raises a given exception.
 PARAMETERS:
 
 * **expected_exception**: The exception(s) to verify.
-* **match**: The text or regular expression to verify in the exception message and its notes (PEP 678).
+* **match**: The text or regular expression to verify in the exception message and its notes ([PEP 678](https://peps.python.org/pep-0678/)).
 * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
@@ -224,7 +224,7 @@ Verify that a block raises does not raise a given exception.
 PARAMETERS:
 
 * **unexpected_exception**: The exception(s) to verify.
-* **match**: The text or regular expression to verify in the exception message and its notes (PEP 678).
+* **match**: The text or regular expression to verify in the exception message and its notes ([PEP 678](https://peps.python.org/pep-0678/)).
 * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
