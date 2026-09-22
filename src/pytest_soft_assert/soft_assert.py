@@ -170,7 +170,7 @@ class SoftAssert:
         msg: str = None
     ) -> ExceptionInfo:
         """
-        Verify that a block raises a given exception.
+        Verify that a code block raises a given exception.
         Args:
             expected_exception (Exception | tuple): The exception(s) to verify.
             match (str | regexp): The text or regular expression to verify in the exception message and its notes.
@@ -216,7 +216,7 @@ class SoftAssert:
         msg: str = None
     ) -> ExceptionInfo:
         """
-        Verify that a block raises does not raise a given exception.
+        Verify that a code block raises does not raise a given exception.
         Args:
             unexpected_exception (Exception | tuple): The exception(s) to verify.
             match (str | regexp): The text or regular expression to verify in the exception message and its notes.

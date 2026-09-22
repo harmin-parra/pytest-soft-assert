@@ -193,7 +193,7 @@ soft_assert.raises
 
 ``raises(expected_exception: Exception | tuple[Exception, ...] = Exception, match: str | regexp = None, msg: str = None)``
 
-Verify that a block raises a given exception.
+Verify that a code block raises a given exception.
 
 PARAMETERS:
 
@@ -219,7 +219,7 @@ soft_assert.does_not_raise
 
 ``does_not_raise(unexpected_exception: Exception | tuple[Exception, ...] = Exception, match: str | regexp = None, msg: str = None)``
 
-Verify that a block raises does not raise a given exception.
+Verify that a code block raises does not raise a given exception.
 
 PARAMETERS:
 
