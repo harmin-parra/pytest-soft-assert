@@ -204,6 +204,14 @@ PARAMETERS:
 
   with soft_assert.raises(ArithmeticError):
       x / 0
+  with soft_assert.raises(match="division by zero"):
+      y / 0
+  with soft_assert.raises(match="note"):
+      e = Exception("Exception message")
+      e.add_note("note")
+      e.add_note("another note")
+      raise e
+
 
 soft_assert.does_not_raise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
