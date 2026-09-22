@@ -165,15 +165,15 @@ class SoftAssert:
     @contextmanager
     def raises(
         self,
-        expected_exception: Exception = Exception,
+        expected_exception: Exception | tuple[Exception, ...] = Exception,
         match: str | re.Pattern[str] = None,
         msg: str = None
-    ):
+    ) -> ExceptionInfo:
         """
         Verify that a block raises a given exception.
         Args:
-            expected_exception (Exception): The exception to verify.
-            match (str | regexp): The text or regular expression to verify in the exception message and its notes (PEP 678)
+            expected_exception (Exception | tuple): The exception(s) to verify.
+            match (str | regexp): The text or regular expression to verify in the exception message and its notes.
             msg (str): The message to display if the verification fails.
         """
         msg = msg + '\n' if msg else ''
@@ -211,15 +211,15 @@ class SoftAssert:
     @contextmanager
     def does_not_raise(
         self,
-        unexpected_exception: Exception = Exception,
+        unexpected_exception: Exception | tuple[Exception, ...] = Exception,
         match: str | re.Pattern[str] = None,
         msg: str = None
-    ):
+    ) -> ExceptionInfo:
         """
         Verify that a block raises does not raise a given exception.
         Args:
-            unexpected_exception (Exception): The exception to verify.
-            match (str | regexp): The text or regular expression to verify in the exception message and its notes (PEP 678)
+            unexpected_exception (Exception | tuple): The exception(s) to verify.
+            match (str | regexp): The text or regular expression to verify in the exception message and its notes.
             msg (str): The message to display if the verification fails.
         """
         msg = msg + '\n' if msg else ''

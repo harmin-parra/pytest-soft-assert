@@ -191,13 +191,14 @@ Raise context manager
 soft_assert.raises
 ~~~~~~~~~~~~~~~~~~
 
-``raises(expected_exception: Exception = Exception, msg: str = None)``
+``raises(expected_exception: Exception | tuple[Exception, ...] = Exception, match: str | regexp = None, msg: str = None)``
 
 Verify that a block raises a given exception.
 
 PARAMETERS:
 
-* **expected_exception**: The exception to verify.
+* **expected_exception**: The exception(s) to verify.
+* **match**: The text or regular expression to verify in the exception message and its notes (PEP 678).
 * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
@@ -216,13 +217,14 @@ PARAMETERS:
 soft_assert.does_not_raise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``does_not_raise(unexpected_exception: Exception = Exception, msg: str = None)``
+``does_not_raise(unexpected_exception: Exception | tuple[Exception, ...] = Exception, match: str | regexp = None, msg: str = None)``
 
 Verify that a block raises does not raise a given exception.
 
 PARAMETERS:
 
-* **unexpected_exception**: The exception to verify.
+* **unexpected_exception**: The exception(s) to verify.
+* **match**: The text or regular expression to verify in the exception message and its notes (PEP 678).
 * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
