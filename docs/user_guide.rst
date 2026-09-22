@@ -42,7 +42,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.verify(x > 5, "Verify variable x")
+  soft_assert.verify(x > 5)
+  soft_assert.verify(x > 5, msg="Verify variable x")
 
 soft_assert.equal
 ~~~~~~~~~~~~~~~~~
@@ -59,7 +60,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.equal(x, y, "Verify x == y")
+  soft_assert.equal(x, y)
+  soft_assert.equal(x, y, msg="Verify x == y")
 
 soft_assert.not_equal
 ~~~~~~~~~~~~~~~~~~~~~
@@ -76,7 +78,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.not_equal(x, y, "Verify x != y")
+  soft_assert.not_equal(x, y)
+  soft_assert.not_equal(x, y, msg="Verify x != y")
 
 soft_assert.true
 ~~~~~~~~~~~~~~~~
@@ -92,7 +95,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.true(x, "Verify x is True)
+  soft_assert.true(x)
+  soft_assert.true(x, "Verify x is True")
 
 soft_assert.false
 ~~~~~~~~~~~~~~~~~
@@ -108,7 +112,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.false(x, "Verify x is False)
+  soft_assert.false(x)
+  soft_assert.false(x, msg="Verify x is False")
 
 soft_assert.none
 ~~~~~~~~~~~~~~~~
@@ -124,7 +129,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.none(x, "Verify x is None)
+  soft_assert.none(x)
+  soft_assert.none(x, "Verify x is None")
 
 soft_assert.not_none
 ~~~~~~~~~~~~~~~~~~~~
@@ -140,7 +146,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.not_none(x, "Verify x is not None)
+  soft_assert.not_none(x)
+  soft_assert.not_none(x, msg="Verify x is not None")
 
 soft_assert.instance_of
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,7 +164,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.instance_of(x, int, "Verify x is of type int)
+  soft_assert.instance_of(x, int)
+  soft_assert.instance_of(x, int, msg="Verify x is of type int")
 
 soft_assert.not_instance_of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,7 +182,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.instance_of(x, str, "Verify x is not of type str)
+  soft_assert.instance_of(x, str)
+  soft_assert.instance_of(x, str, msg="Verify x is not of type str")
 
 Raise context manager
 ---------------------
@@ -193,7 +202,7 @@ PARAMETERS:
 
 .. code-block:: python
 
-  with soft_assert.raises(ArithmeticError, "Verify exception"):
+  with soft_assert.raises(ArithmeticError):
       x / 0
 
 soft_assert.does_not_raise
