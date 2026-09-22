@@ -239,6 +239,7 @@ soft_assert.assert_all
 ``assert_all()``
 
 Assert that all collected verifications are true.
+Ends the test execution if any of the verifications fail.
 
 .. code-block:: python
 
