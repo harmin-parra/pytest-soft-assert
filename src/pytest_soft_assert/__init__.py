@@ -29,7 +29,7 @@ def update_test_status(
     #     _debug_message(report, "Called by another plugin\n")
 
     if len(fx_soft.errors) > 0:
-        report.softexcinfo = fx_soft.get_excinfo()
+        report.softexcinfo = fx_soft._get_excinfo()
     if fx_soft.already_failed or len(fx_soft.errors) == 0:
         # _debug_message(report, "Nothing to do. Soft assertion passed or failed during test execution\n")
         return report
