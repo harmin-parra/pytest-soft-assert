@@ -182,8 +182,8 @@ PARAMETERS:
 
 .. code-block:: python
 
-  soft_assert.instance_of(x, str)
-  soft_assert.instance_of(x, str, msg="Verify x is not of type str")
+  soft_assert.not_instance_of(x, str)
+  soft_assert.not_instance_of(x, str, msg="Verify x is not of type str")
 
 Raise context manager
 ---------------------
@@ -239,6 +239,7 @@ soft_assert.assert_all
 ``assert_all()``
 
 Assert that all collected verifications are true.
+
 Ends the test execution if any of the verifications fail.
 
 .. code-block:: python
