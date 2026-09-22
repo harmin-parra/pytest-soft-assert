@@ -43,7 +43,7 @@ def update_test_status(
     has_xfail_marker = item.get_closest_marker("xfail") is not None
 
     exc = Failed() if is_fail_mode else XFailed()
-    excinfo = pytest.ExceptionInfo.from_exc_info((type(exc), exc, ""))
+    excinfo = pytest.ExceptionInfo.from_exc_info((type(exc), exc, None))
 
     if report.outcome == "passed":
         if has_wasxfail:

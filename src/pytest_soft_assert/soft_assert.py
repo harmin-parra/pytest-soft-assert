@@ -33,9 +33,9 @@ class SoftAssert:
         if fail_mode in ('fail', 'xfail'):
             self.fail_mode = fail_mode
 
-    def get_excinfo(self) -> pytest.ExceptionInfo:
+    def _get_excinfo(self) -> pytest.ExceptionInfo:
         exc = SoftAssertionError('\n'.join(self.errors))
-        return pytest.ExceptionInfo.from_exc_info((type(exc), exc, ''))
+        return pytest.ExceptionInfo.from_exc_info((type(exc), exc, None))
 
     def assert_all(self) -> None:
         """ Verify that all supplied verifications are true. """
