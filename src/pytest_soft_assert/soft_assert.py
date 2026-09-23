@@ -254,10 +254,11 @@ def _search_matches(excinfo: ExceptionInfo, match: str | re.Pattern[str] = None)
     """
     if match in (None, "", r'^$'):
         return True
-    # search in exception message
-    result = re.search(match, str(excinfo.value))
-    if result:
-        return True
+    # search in exception constructor arguments
+    for arg in excinfo.value.args:
+        result = re.search(match, str(arg))
+        if result:
+            return True
     # search in exception notes
     notes = getattr(excinfo.value, "__notes__", [])
     for note in notes:
