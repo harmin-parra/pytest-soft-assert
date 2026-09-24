@@ -37,7 +37,7 @@ class SoftAssert:
             self.fail_mode = fail_mode
 
     def _get_excinfo(self) -> pytest.ExceptionInfo:
-        exc = SoftAssertionError('\n'.join(self.errors))
+        exc = SoftAssertionError('\n\n'.join(self.errors))
         return pytest.ExceptionInfo.from_exc_info((type(exc), exc, None))
 
     def assert_all(self) -> None:
@@ -61,9 +61,8 @@ class SoftAssert:
             condition (bool): The condition to verify.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if not condition:
-            self.errors.append(msg + "Soft assertion failed")
+            self.errors.append(_build_exception_message(None, msg))
 
     def equal(self, actual: object, expected: object, msg: str = None) -> None:
         """
@@ -73,9 +72,10 @@ class SoftAssert:
             expected (object): The second value to compare.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if expected != actual:
-            self.errors.append(msg + f"Soft assertion failed: Expected: '{expected}', got: '{actual}'")
+            self.errors.append(
+                _build_exception_message(f"Expected: '{expected}', got: '{actual}'", msg)
+            )
 
     def not_equal(self, actual: object, unexpected: object, msg: str = None) -> None:
         """
@@ -85,9 +85,10 @@ class SoftAssert:
             unexpected (object): The second value to compare.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if unexpected == actual:
-            self.errors.append(msg + f"Soft assertion failed: Unexpected: '{unexpected}'")
+            self.errors.append(
+                _build_exception_message(f"Unexpected: '{unexpected}'", msg)
+            )
 
     def true(self, condition: bool, msg: str = None) -> None:
         """
@@ -96,9 +97,10 @@ class SoftAssert:
             condition (bool): The condition to verify.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if not condition:
-            self.errors.append(msg + "Soft assertion failed: Expected: 'True'")
+            self.errors.append(
+                _build_exception_message(f"Expected: 'True'", msg)
+            )
 
     def false(self, condition: bool, msg: str = None) -> None:
         """
@@ -107,9 +109,10 @@ class SoftAssert:
             condition (bool): The condition to verify.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if condition:
-            self.errors.append(msg + "Soft assertion failed: Expected: 'False'")
+            self.errors.append(
+                _build_exception_message(f"Expected: 'False'", msg)
+            )
 
     def none(self, obj: object, msg: str = None) -> None:
         """
@@ -118,9 +121,10 @@ class SoftAssert:
             obj (object): The value to verify.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if obj is not None:
-            self.errors.append(msg + f"Soft assertion failed: Expected: 'None', got: '{obj}'")
+            self.errors.append(
+                _build_exception_message(f"Expected: 'None', got: '{obj}'", msg)
+            )
 
     def not_none(self, obj: object, msg: str = None) -> None:
         """
@@ -129,9 +133,10 @@ class SoftAssert:
             obj (object): The value to verify.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if obj is None:
-            self.errors.append(msg + "Soft assertion failed: Unexpected: 'None'")
+            self.errors.append(
+                _build_exception_message(f"Unexpected: 'None'", msg)
+            )
 
     def instance_of(self, obj: object, clazz: type, msg=None) -> None:
         """
@@ -141,10 +146,9 @@ class SoftAssert:
             clazz (type):  The expected class-type.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
         if not isinstance(obj, clazz):
             self.errors.append(
-                msg + f"Soft assertion failed: Expected: '{clazz.__name__}', got: '{type(obj).__name__}'"
+                _build_exception_message(f"Expected: '{clazz.__name__}', got: '{type(obj).__name__}'", msg)
             )
 
     def not_instance_of(self, obj: object, clazz: type, msg: str = None) -> None:
@@ -157,7 +161,9 @@ class SoftAssert:
         """
         msg = msg + '\n' if msg else ''
         if isinstance(obj, clazz):
-            self.errors.append(msg + f"Soft assertion failed: Unexpected: '{clazz.__name__}'")
+            self.errors.append(
+                _build_exception_message(f"Unexpected: '{clazz.__name__}'", msg)
+            )
 
     #
     # raise context manager
@@ -173,7 +179,7 @@ class SoftAssert:
         Verify that a code block raises a given exception.
         Args:
             expected_exception (Exception | tuple): The exception(s) to verify.
-            match (str | regexp): The text or regular expression to verify in the exception message and its notes.
+            match (str | regexp): The text or regular expression to verify in the exception argument(s) and its notes.
             msg (str): The message to display if the verification fails.
         """
         msg = msg + '\n' if msg else ''
@@ -187,26 +193,27 @@ class SoftAssert:
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
         except Exception as e:
             # Wrong exception type → record as soft failure
-            self.errors.append(
-                msg + f"Expected: '{expected_exception.__name__}', got: '{type(e).__name__}: {e}'"
+            self.errors.append(_build_exception_message(
+                f"Expected: '{expected_exception.__name__}', got: '{type(e).__name__}: {e}'", msg)
             )
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
         else:
             # No exception was raised → record as soft failure
-            self.errors.append(
-                msg + f"Expected: '{expected_exception.__name__}', but nothing was raised"
+            self.errors.append(_build_exception_message(
+                f"Expected: '{expected_exception.__name__}', but nothing was raised", msg)
             )
 
         # Verify match in exception message or notes
         if check_match and not _search_matches(excinfo, match):
-            print(excinfo.type)
-            print(excinfo.value)
             # No match → record as soft failure
             if hasattr(excinfo.value, '__notes__'):
-                msg += f"Match: '{match}' not found in the exception message '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}"
+                self.errors.append(_build_exception_message(
+                    f"Match '{match}' not found in the exception argument(s) '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
+                )
             else:
-                msg += f"Match: '{match}' not found in the exception message '{str(excinfo.value)}'"
-            self.errors.append(msg)
+                self.errors.append(_build_exception_message(
+                    f"Match '{match}' not found in the exception argument(s) '{str(excinfo.value)}'", msg)
+                )
 
     @contextmanager
     def does_not_raise(
@@ -219,7 +226,7 @@ class SoftAssert:
         Verify that a code block raises does not raise a given exception.
         Args:
             unexpected_exception (Exception | tuple): The exception(s) to verify.
-            match (str | regexp): The text or regular expression to verify in the exception message and its notes.
+            match (str | regexp): The text or regular expression to verify in the exception argument(s) and its notes.
             msg (str): The message to display if the verification fails.
         """
         msg = msg + '\n' if msg else ''
@@ -231,7 +238,7 @@ class SoftAssert:
             # Wrong exception type → check match later
             check_match = True and match not in (None, "", r'^$')
             self.errors.append(
-                msg + f"Unexpected: '{unexpected_exception.__name__}'"
+                _build_exception_message(f"Unexpected: '{unexpected_exception.__name__}'", msg)
             )
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
         except Exception as e:
@@ -242,18 +249,30 @@ class SoftAssert:
         if check_match and _search_matches(excinfo, match):
             # match → record as soft failure
             if hasattr(excinfo.value, '__notes__'):
-                msg += f"Match: '{match}' found in the exception message '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}"
+                self.errors.append(_build_exception_message(
+                    f"Match '{match}' found in the exception argument(s) '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
+                )
             else:
-                msg += f"Match: '{match}' found in the exception message '{str(excinfo.value)}'"
-            self.errors.append(msg)
+                self.errors.append(_build_exception_message(
+                    f"Match '{match}' found in the exception argument(s) '{str(excinfo.value)}'", msg)
+                )
 
 
-def _search_matches(excinfo: ExceptionInfo, match: str | re.Pattern[str] = None) -> bool:
+def _build_exception_message(reason: str = None, msg: str = None) -> str:
+    """
+    Build the soft assertion failure message
+    """
+    message = f"SoftAssertionError: {reason}" if reason else "SoftAssertionError"
+    message = f"{message}\n    {msg}" if msg else message
+    return message
+
+
+def _search_matches(excinfo: ExceptionInfo, match: str | re.Pattern[str]) -> bool:
     """
     Utility function to find a match in an exception message or in its notes.
     """
-    if match in (None, "", r'^$'):
-        return True
+    if match is None:
+        raise Exception("'match' parameter must be string or compiled pattern")
     # search in exception constructor arguments
     for arg in excinfo.value.args:
         result = re.search(match, str(arg))
