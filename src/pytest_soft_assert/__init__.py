@@ -1,8 +1,8 @@
 import os
 import pytest
 from _pytest.outcomes import Failed, Skipped, XFailed
-from .soft_assert import SoftAssert
 from .exception import SoftAssertionError
+from .soft_assert import SoftAssert
 
 
 # DEBUG = os.getenv("PYTEST_SOFT_ASSERT_DEBUG", "false").lower() == "true"
@@ -28,17 +28,17 @@ def update_test_status(
     # if external_call:
     #     _debug_message(report, "Called by another plugin\n")
 
-    if len(fx_soft.errors) > 0:
-        report.softexcinfo = fx_soft._get_excinfo()
-    if fx_soft.already_failed or len(fx_soft.errors) == 0:
+    if hasattr(fx_soft._exc, "__notes__"):
+        setattr(report, "softexcinfo", fx_soft._get_excinfo())
+    if fx_soft._already_failed or len(getattr(fx_soft._exc, "__notes__", [])) == 0:
         # _debug_message(report, "Nothing to do. Soft assertion passed or failed during test execution\n")
         return report
 
     # _debug_before(report, item, call)
 
-    fx_soft.already_failed = True
+    fx_soft._already_failed = True
 
-    is_fail_mode = fx_soft.fail_mode == "fail"
+    is_fail_mode = fx_soft._fail_mode == "fail"
     has_wasxfail = getattr(report, "wasxfail", None) is not None
     has_xfail_marker = item.get_closest_marker("xfail") is not None
 

@@ -1,6 +1,6 @@
 import pytest
-from contextlib import contextmanager
 import re
+from contextlib import contextmanager
 from typing import Literal
 from _pytest._code import ExceptionInfo
 from .exception import SoftAssertionError
@@ -17,9 +17,9 @@ class SoftAssert:
         Args:
             fail_mode (str): The soft assertion mode. Possible values: 'fail' or 'xfail'.
         """
-        self.fail_mode = None
-        self.errors: list[str] = []
-        self.already_failed: bool = False
+        self._fail_mode: Literal['fail', 'xfail'] = None
+        self._already_failed: bool = False
+        self._exc: SoftAssertionError = SoftAssertionError()
         if fail_mode not in ('fail', 'xfail'):
             fail_mode = "fail"
         self.set_fail_mode(fail_mode)
@@ -34,19 +34,18 @@ class SoftAssert:
             fail_mode (str): The soft assertion mode. Possible values: 'fail' or 'xfail'.
         """
         if fail_mode in ('fail', 'xfail'):
-            self.fail_mode = fail_mode
+            self._fail_mode = fail_mode
 
     def _get_excinfo(self) -> pytest.ExceptionInfo:
-        exc = SoftAssertionError('\n\n'.join(self.errors))
-        return pytest.ExceptionInfo.from_exc_info((type(exc), exc, None))
+        return pytest.ExceptionInfo.from_exc_info((type(self._exc), self._exc, None))
 
     def assert_all(self) -> None:
         """ Verify that all supplied verifications are true. """
-        if self.already_failed:
+        if self._already_failed:
             return 
-        if self.errors:
-            self.already_failed = True
-            if self.fail_mode == "fail":
+        if len(getattr(self._exc, "__notes__", [])) > 0:
+            self._already_failed = True
+            if self._fail_mode == "fail":
                 pytest.fail()
             else:
                 pytest.xfail()
@@ -62,7 +61,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if not condition:
-            self.errors.append(_build_exception_message(None, msg))
+            self._exc.add_note(_build_exception_message(None, msg))
 
     def equal(self, actual: object, expected: object, msg: str = None) -> None:
         """
@@ -73,7 +72,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if expected != actual:
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Expected: '{expected}', got: '{actual}'", msg)
             )
 
@@ -86,7 +85,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if unexpected == actual:
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Unexpected: '{unexpected}'", msg)
             )
 
@@ -98,7 +97,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if not condition:
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Expected: 'True'", msg)
             )
 
@@ -110,7 +109,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if condition:
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Expected: 'False'", msg)
             )
 
@@ -122,7 +121,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if obj is not None:
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Expected: 'None', got: '{obj}'", msg)
             )
 
@@ -134,7 +133,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if obj is None:
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Unexpected: 'None'", msg)
             )
 
@@ -147,7 +146,7 @@ class SoftAssert:
             msg (str): The message to display if the verification fails.
         """
         if not isinstance(obj, clazz):
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Expected: '{clazz.__name__}', got: '{type(obj).__name__}'", msg)
             )
 
@@ -161,7 +160,7 @@ class SoftAssert:
         """
         msg = msg + '\n' if msg else ''
         if isinstance(obj, clazz):
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Unexpected: '{clazz.__name__}'", msg)
             )
 
@@ -193,13 +192,13 @@ class SoftAssert:
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
         except Exception as e:
             # Wrong exception type → record as soft failure
-            self.errors.append(_build_exception_message(
+            self._exc.add_note(_build_exception_message(
                 f"Expected: '{expected_exception.__name__}', got: '{type(e).__name__}: {e}'", msg)
             )
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
         else:
             # No exception was raised → record as soft failure
-            self.errors.append(_build_exception_message(
+            self._exc.add_note(_build_exception_message(
                 f"Expected: '{expected_exception.__name__}', but nothing was raised", msg)
             )
 
@@ -207,11 +206,11 @@ class SoftAssert:
         if check_match and not _search_matches(excinfo, match):
             # No match → record as soft failure
             if hasattr(excinfo.value, '__notes__'):
-                self.errors.append(_build_exception_message(
+                self._exc.add_note(_build_exception_message(
                     f"Match '{match}' not found in the exception argument(s) '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
                 )
             else:
-                self.errors.append(_build_exception_message(
+                self._exc.add_note(_build_exception_message(
                     f"Match '{match}' not found in the exception argument(s) '{str(excinfo.value)}'", msg)
                 )
 
@@ -237,7 +236,7 @@ class SoftAssert:
         except unexpected_exception as e:
             # Wrong exception type → check match later
             check_match = True and match not in (None, "", r'^$')
-            self.errors.append(
+            self._exc.add_note(
                 _build_exception_message(f"Unexpected: '{unexpected_exception.__name__}'", msg)
             )
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
@@ -249,11 +248,11 @@ class SoftAssert:
         if check_match and _search_matches(excinfo, match):
             # match → record as soft failure
             if hasattr(excinfo.value, '__notes__'):
-                self.errors.append(_build_exception_message(
+                self._exc.add_note(_build_exception_message(
                     f"Match '{match}' found in the exception argument(s) '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
                 )
             else:
-                self.errors.append(_build_exception_message(
+                self._exc.add_note(_build_exception_message(
                     f"Match '{match}' found in the exception argument(s) '{str(excinfo.value)}'", msg)
                 )
 

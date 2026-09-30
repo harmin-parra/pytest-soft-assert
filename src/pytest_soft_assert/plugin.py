@@ -1,14 +1,14 @@
 import os
 import pytest
-from .soft_assert import SoftAssert
 from . import update_test_status
+from .soft_assert import SoftAssert
 
 
 #
 # Definition of test options
 #
 def pytest_addoption(parser):
-    #parser.addoption(
+    # parser.addoption(
     #     "--soft-assert-mode",
     #     action="store",
     #     default="fail",
@@ -46,8 +46,8 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()
     report = update_test_status(report, item, call, False)
     outcome.force_result(report)
-    if hasattr(report, "softexcinfo"):
-        report.sections.append(("Captured soft assertions", str(report.softexcinfo.value)))
+    if hasattr(report, "softexcinfo") and hasattr(report.softexcinfo.value, "__notes__"):
+        report.sections.append(("Captured soft assertions", "\n\n".join(report.softexcinfo.value.__notes__)))
 
     """
     DEBUG = os.getenv("PYTEST_SOFT_ASSERT_DEBUG", "false").lower() == "true"
