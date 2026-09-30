@@ -8,12 +8,6 @@ from .soft_assert import SoftAssert
 # Definition of test options
 #
 def pytest_addoption(parser):
-    # parser.addoption(
-    #     "--soft-assert-mode",
-    #     action="store",
-    #     default="fail",
-    #     help="How a soft assertion should fail. Accepted values: fail, xfail. Default value: fail."
-    # )
     parser.addini(
         "soft_assert_mode",
         type="string",
@@ -27,7 +21,6 @@ def pytest_addoption(parser):
 #
 def _fx_soft_assert_mode(config):
     """ The mode soft assertion should fail """
-    # value = config.getoption("--soft-assert-mode")
     value = config.getini("soft_assert_mode")
     return value if value in ('fail', 'xfail') else 'fail'
 

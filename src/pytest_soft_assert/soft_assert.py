@@ -51,8 +51,9 @@ class SoftAssert:
                 pytest.xfail()
 
     #
-    # Method-style verification
+    # Method-style verifications
     #
+
     def verify(self, condition: bool, msg: str = None) -> None:
         """
         Verify a condition.
@@ -165,8 +166,9 @@ class SoftAssert:
             )
 
     #
-    # raise context manager
+    # Context managers for exception verifications
     #
+
     @contextmanager
     def raises(
         self,
@@ -178,7 +180,7 @@ class SoftAssert:
         Verify that a code block raises a given exception.
         Args:
             expected_exception (Exception | tuple): The exception(s) to verify.
-            match (str | regexp): The text or regular expression to verify in the exception argument(s) and its notes.
+            match (str | regexp): The text or regular expression to verify in the exception string representation and its notes.
             msg (str): The message to display if the verification fails.
         """
         msg = msg + '\n' if msg else ''
@@ -202,16 +204,16 @@ class SoftAssert:
                 f"Expected: '{expected_exception.__name__}', but nothing was raised", msg)
             )
 
-        # Verify match in exception message or notes
+        # Verify match in exception constructor argument(s) and notes
         if check_match and not _search_matches(excinfo, match):
             # No match → record as soft failure
             if hasattr(excinfo.value, '__notes__'):
                 self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' not found in the exception argument(s) '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
+                    f"Match '{match}' not found in the exception representation '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
                 )
             else:
                 self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' not found in the exception argument(s) '{str(excinfo.value)}'", msg)
+                    f"Match '{match}' not found in the exception representation '{str(excinfo.value)}'", msg)
                 )
 
     @contextmanager
@@ -225,7 +227,7 @@ class SoftAssert:
         Verify that a code block raises does not raise a given exception.
         Args:
             unexpected_exception (Exception | tuple): The exception(s) to verify.
-            match (str | regexp): The text or regular expression to verify in the exception argument(s) and its notes.
+            match (str | regexp): The text or regular expression to verify in the exception string representation and its notes.
             msg (str): The message to display if the verification fails.
         """
         msg = msg + '\n' if msg else ''
@@ -244,16 +246,16 @@ class SoftAssert:
             # Correct exception was raised → do nothing
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
 
-        # Verify match in exception message or notes
+        # Verify match in exception constructor argument(s) and notes
         if check_match and _search_matches(excinfo, match):
             # match → record as soft failure
             if hasattr(excinfo.value, '__notes__'):
                 self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' found in the exception argument(s) '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
+                    f"Match '{match}' found in the exception representation '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
                 )
             else:
                 self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' found in the exception argument(s) '{str(excinfo.value)}'", msg)
+                    f"Match '{match}' found in the exception representation '{str(excinfo.value)}'", msg)
                 )
 
 
@@ -268,7 +270,7 @@ def _build_exception_message(reason: str = None, msg: str = None) -> str:
 
 def _search_matches(excinfo: ExceptionInfo, match: str | re.Pattern[str]) -> bool:
     """
-    Utility function to find a match in an exception message or in its notes.
+    Utility function to find a match in the exception string representation or in its notes.
     """
     if match is None:
         raise Exception("'match' parameter must be string or compiled pattern")
