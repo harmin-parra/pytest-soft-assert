@@ -199,7 +199,7 @@ Context managers for exception verifications
 soft_assert.raises
 ~~~~~~~~~~~~~~~~~~
 
-``raises(expected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str | regexp = None, msg: str = None)``
+``raises(expected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str = None, msg: str = None) -> ExceptionInfo``
 
 Verify that a code block raises a given exception.
 
@@ -209,23 +209,29 @@ PARAMETERS:
 * **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
 * **msg**: The message to display if the verification fails. (*optional*)
 
+RETURN: an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference.html#pytest.ExceptionInfo>`_ object that can be used to inspect the captured exception.
+
 .. code-block:: python
 
-  with soft_assert.raises(ArithmeticError):
-      x / 0
+  with soft_assert.raises(ArithmeticError) as excinfo:
+      5 / 0
+  # Examine the raised Exception (type and value)
+  print(excinfo.type)
+  print(excinfo.value.args):
+
   with soft_assert.raises(match="division by zero"):
       y / 0
-  with soft_assert.raises(match="note"):
-      e = Exception("Exception message")
-      e.add_note("note")
-      e.add_note("another note")
-      raise e
 
+  with soft_assert.raises(match=r"note \d+"):
+      e = Exception("Exception message")
+      e.add_note("note 1")
+      e.add_note("note 2")
+      raise e
 
 soft_assert.does_not_raise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``does_not_raise(unexpected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str | regexp = None, msg: str = None)``
+``does_not_raise(unexpected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str = None, msg: str = None) -> ExceptionInfo``
 
 Verify that a code block raises does not raise a given exception.
 
@@ -234,6 +240,8 @@ PARAMETERS:
 * **unexpected_exception**: The exception(s) to verify.
 * **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
 * **msg**: The message to display if the verification fails. (*optional*)
+
+RETURN: an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference.html#pytest.ExceptionInfo>`_ object that can be used to inspect the captured exception.
 
 .. code-block:: python
 
@@ -299,7 +307,7 @@ Raise context manager:
   def test_example_02(soft_assert):
       with soft_assert.raises(ArithmeticError) as excinfo:
           5 / 0
-      # Examine the raised Exception (type and message)
+      # Examine the raised Exception (type and value)
       print("The exception type: ", excinfo.type)
       print("The exception value: ", excinfo.value)
 
