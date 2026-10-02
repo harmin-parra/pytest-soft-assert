@@ -23,7 +23,15 @@ The soft assertion failure mode.
 API
 ===
 
-The function scoped fixture ``soft_assert`` provides the following methods:
+The plugin provides the function scoped fixture ``soft_assert``.
+
+.. code-block:: python
+
+  def test_example(soft_assert)
+      ...
+      ...
+
+The fixture provides the following methods:
 
 Method-style verifications
 --------------------------
@@ -185,20 +193,20 @@ PARAMETERS:
   soft_assert.not_instance_of(x, str)
   soft_assert.not_instance_of(x, str, msg="Verify x is not of type str")
 
-Raise context manager
----------------------
+Context managers for exception verifications
+--------------------------------------------
 
 soft_assert.raises
 ~~~~~~~~~~~~~~~~~~
 
-``raises(expected_exception: Exception | tuple[Exception, ...] = Exception, match: str | regexp = None, msg: str = None)``
+``raises(expected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str | regexp = None, msg: str = None)``
 
 Verify that a code block raises a given exception.
 
 PARAMETERS:
 
 * **expected_exception**: The exception(s) to verify.
-* **match**: The text or regular expression to verify in the exception message and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
+* **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
 * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python
@@ -217,14 +225,14 @@ PARAMETERS:
 soft_assert.does_not_raise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``does_not_raise(unexpected_exception: Exception | tuple[Exception, ...] = Exception, match: str | regexp = None, msg: str = None)``
+``does_not_raise(unexpected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str | regexp = None, msg: str = None)``
 
 Verify that a code block raises does not raise a given exception.
 
 PARAMETERS:
 
 * **unexpected_exception**: The exception(s) to verify.
-* **match**: The text or regular expression to verify in the exception message and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
+* **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
 * **msg**: The message to display if the verification fails. (*optional*)
 
 .. code-block:: python

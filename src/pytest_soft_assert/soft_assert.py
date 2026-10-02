@@ -172,7 +172,7 @@ class SoftAssert:
     @contextmanager
     def raises(
         self,
-        expected_exception: Exception | tuple[Exception, ...] = Exception,
+        expected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception],
         match: str | re.Pattern[str] = None,
         msg: str = None
     ) -> ExceptionInfo:
@@ -183,7 +183,7 @@ class SoftAssert:
             match (str | regexp): The text or regular expression to verify in the exception string representation and its notes.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
+        # msg = msg if msg else ''
         excinfo = pytest.ExceptionInfo.for_later()
         check_match = False
         try:
@@ -207,19 +207,18 @@ class SoftAssert:
         # Verify match in exception constructor argument(s) and notes
         if check_match and not _search_matches(excinfo, match):
             # No match → record as soft failure
-            if hasattr(excinfo.value, '__notes__'):
-                self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' not found in the exception representation '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
-                )
-            else:
-                self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' not found in the exception representation '{str(excinfo.value)}'", msg)
-                )
+            notes = hasattr(excinfo.value, '__notes__')
+            representation = f"the exception representation '{excinfo.value}'"
+            if notes:
+                representation += f" or notes {notes}"
+            self._exc.add_note(_build_exception_message(
+                f"Match '{match}' not found in {representation}'", msg)
+            )
 
     @contextmanager
     def does_not_raise(
         self,
-        unexpected_exception: Exception | tuple[Exception, ...] = Exception,
+        unexpected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception],
         match: str | re.Pattern[str] = None,
         msg: str = None
     ) -> ExceptionInfo:
@@ -230,33 +229,39 @@ class SoftAssert:
             match (str | regexp): The text or regular expression to verify in the exception string representation and its notes.
             msg (str): The message to display if the verification fails.
         """
-        msg = msg + '\n' if msg else ''
+        # msg = msg if msg else ''
         excinfo = pytest.ExceptionInfo.for_later()
         check_match = False
+        exc_raised = False
         try:
             yield excinfo
         except unexpected_exception as e:
             # Wrong exception type → check match later
+            exc_raised = True
             check_match = True and match not in (None, "", r'^$')
-            self._exc.add_note(
-                _build_exception_message(f"Unexpected: '{unexpected_exception.__name__}'", msg)
-            )
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
         except Exception as e:
             # Correct exception was raised → do nothing
             excinfo.fill_unfilled((type(e), e, e.__traceback__))
 
-        # Verify match in exception constructor argument(s) and notes
-        if check_match and _search_matches(excinfo, match):
-            # match → record as soft failure
-            if hasattr(excinfo.value, '__notes__'):
+        # Check matches
+        match_found = check_match and _search_matches(excinfo, match)
+
+        # Record soft failure
+        if exc_raised and unexpected_exception is not Exception:
+            if not check_match or match_found:
                 self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' found in the exception representation '{str(excinfo.value)}' or notes {getattr(excinfo.value, '__notes__')}", msg)
+                    f"Unexpected: '{unexpected_exception.__name__}'", msg)
                 )
-            else:
-                self._exc.add_note(_build_exception_message(
-                    f"Match '{match}' found in the exception representation '{str(excinfo.value)}'", msg)
-                )
+
+        if match_found:
+            notes = getattr(excinfo.value, "__notes__", None)
+            representation = f"the exception representation '{excinfo.value}'"
+            if notes:
+                representation += f" or notes {notes}"
+            self._exc.add_note(_build_exception_message(
+                f"Match '{match}' found in {representation}", msg)
+            )
 
 
 def _build_exception_message(reason: str = None, msg: str = None) -> str:
