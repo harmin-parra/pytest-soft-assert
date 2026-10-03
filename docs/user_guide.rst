@@ -232,6 +232,7 @@ soft_assert.does_not_raise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``does_not_raise(unexpected_exception: type[Exception] | tuple[type[Exception], ...] = None, match: str = None, msg: str = None) -> ExceptionInfo``
+
 Verify that a code block raises does not raise an exception type or one of its subclasses.
 
 PARAMETERS:
