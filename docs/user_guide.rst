@@ -300,7 +300,7 @@ Method-style verifications:
       soft_assert.not_none(y, "Verify variable y is not none")
       soft_assert.instance_of(5, int, "Verify a variable is instance of int")
 
-Raise context manager:
+Context manager for exception verifications:
 
 .. code-block:: python
 
