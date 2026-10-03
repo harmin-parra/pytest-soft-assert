@@ -10,9 +10,9 @@ These are the options that can be added to the ``pytest.ini`` file:
 
 .. confval:: soft_assert_mode
 
-   Type: ``str``
+   TYPE: ``str``
 
-   Default value: ``fail``
+   DEFAULT VALUE: ``fail``
 
 The soft assertion failure mode.
 

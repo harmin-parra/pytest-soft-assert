@@ -1,4 +1,3 @@
-# Defining the exact version will make sure things don't break
 furo
 myst-parser
 readthedocs-sphinx-search
