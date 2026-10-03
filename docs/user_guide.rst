@@ -199,23 +199,23 @@ Context managers for exception verifications
 soft_assert.raises
 ~~~~~~~~~~~~~~~~~~
 
-``raises(expected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str = None, msg: str = None) -> ExceptionInfo``
+``raises(expected_exception: type[Exception] | tuple[type[Exception], ...] = None, match: str = None, msg: str = None) -> ExceptionInfo``
 
-Verify that a code block raises a given exception.
+Verify that a code block raises an exception type or one of its subclasses.
 
 PARAMETERS:
 
-* **expected_exception**: The exception(s) to verify.
-* **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
+* **expected_exception**: The exception(s) to verify. (*optional*)
+* **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_. (*optional*)
 * **msg**: The message to display if the verification fails. (*optional*)
 
-RETURN: an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference.html#pytest.ExceptionInfo>`_ object that can be used to inspect the captured exception.
+YIELDS: The information of the captured exception as an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference.html#pytest.ExceptionInfo>`_ object.
 
 .. code-block:: python
 
   with soft_assert.raises(ArithmeticError) as excinfo:
       5 / 0
-  # Examine the raised Exception (type and value)
+  # Examine the raised exception (type and value)
   print(excinfo.type)
   print(excinfo.value.args):
 
@@ -231,17 +231,16 @@ RETURN: an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference
 soft_assert.does_not_raise
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``does_not_raise(unexpected_exception: type[Exception] | tuple[type[Exception], ...] = type[Exception], match: str = None, msg: str = None) -> ExceptionInfo``
-
-Verify that a code block raises does not raise a given exception.
+``does_not_raise(unexpected_exception: type[Exception] | tuple[type[Exception], ...] = None, match: str = None, msg: str = None) -> ExceptionInfo``
+Verify that a code block raises does not raise an exception type or one of its subclasses.
 
 PARAMETERS:
 
-* **unexpected_exception**: The exception(s) to verify.
-* **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_.
+* **unexpected_exception**: The exception(s) to verify. (*optional*)
+* **match**: The text or regular expression to verify in the exception string representation and its notes `(PEP 678) <https://peps.python.org/pep-0678/>`_. (*optional*)
 * **msg**: The message to display if the verification fails. (*optional*)
 
-RETURN: an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference.html#pytest.ExceptionInfo>`_ object that can be used to inspect the captured exception.
+YIELDS: The information of the captured exception as an `ExceptionInfo <https://docs.pytest.org/en/stable/reference/reference.html#pytest.ExceptionInfo>`_ object.
 
 .. code-block:: python
 
