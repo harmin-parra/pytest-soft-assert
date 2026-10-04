@@ -1,7 +1,7 @@
 import pytest
 import re
 from contextlib import contextmanager
-from typing import Literal, Iterable
+from typing import Iterable, Literal
 from _pytest._code import ExceptionInfo
 from .exception import SoftAssertionError
 
@@ -46,8 +46,8 @@ class SoftAssert:
         Verify that all supplied verifications are true.
 
         Raises:
-            pytest.fail.Exception if a verification fails and the assertion mode is 'fail'.
-            pytest.xfail.Exception if a verification fails and the assertion mode is 'xfail'.
+            pytest.fail.Exception: If a verification fails and the soft assertion mode is 'fail'.
+            pytest.xfail.Exception: If a verification fails and the soft assertion mode is 'xfail'.
         """
         if self._already_failed:
             return 
@@ -219,6 +219,7 @@ class SoftAssert:
         excinfo = pytest.ExceptionInfo.for_later()
         check_match = False
         matched_exc = None
+
         try:
             yield excinfo
         except Exception as e:
@@ -287,6 +288,7 @@ class SoftAssert:
         exc_raised = None
         match_found = False
         matched_exc = None
+
         try:
             yield excinfo
         except Exception as e:
@@ -317,7 +319,7 @@ class SoftAssert:
             exc_repr = f"the exception representation '{excinfo.value}'"
             if notes:
                 exc_repr += f" or notes {notes}"
-            if (exc_raised is None or len(unexpected_exception) == 0):
+            if exc_raised is None or len(unexpected_exception) == 0:
                 self._exc.add_note(_build_exception_message(
                     f"Unexpected match '{match}' found in {exc_repr}", msg)
                 )

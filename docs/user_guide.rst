@@ -264,8 +264,8 @@ Explicit calls to this method are not required, as it gets automatically called 
 
 RAISES:
 
-* ``pytest.fail.Exception`` if a verification fails and soft assertion mode is ``'fail'``.
-* ``pytest.xfail.Exception`` if a verification fails and soft assertion mode is ``'xfail'``.
+* ``pytest.fail.Exception``: If a verification fails and soft assertion mode is ``'fail'``.
+* ``pytest.xfail.Exception``: If a verification fails and soft assertion mode is ``'xfail'``.
 
 .. code-block:: python
 
