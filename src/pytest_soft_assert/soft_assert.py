@@ -42,7 +42,13 @@ class SoftAssert:
         return pytest.ExceptionInfo.from_exc_info((type(self._exc), self._exc, None))
 
     def assert_all(self) -> None:
-        """ Verify that all supplied verifications are true. """
+        """
+        Verify that all supplied verifications are true.
+
+        Raises:
+            pytest.fail.Exception if a verification fails and the assertion mode is 'fail'.
+            pytest.xfail.Exception if a verification fails and the assertion mode is 'xfail'.
+        """
         if self._already_failed:
             return 
         if len(getattr(self._exc, "__notes__", [])) > 0:

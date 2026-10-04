@@ -260,6 +260,11 @@ Assert that all collected verifications are true.
 
 Ends the test execution if any of the verifications fail.
 
+RAISES:
+
+* ``pytest.fail.Exception`` if a verification fails and soft assertion mode is ``'fail'``.
+* ``pytest.xfail.Exception`` if a verification fails and soft assertion mode is ``'xfail'``.
+
 .. code-block:: python
 
   soft_assert.assert_all()
@@ -271,14 +276,16 @@ soft_assert.set_fail_mode
 
 Modify the soft assertion mode at runtime.
 
-A soft_assertion failure will result in the following test status:
+A soft assertion failure will result in the following test status:
 
-* **failed** if the soft assertion mode is ``fail``.
-* **xfailed** if the soft assertion mode is ``xfail``.
+* **failed** if the soft assertion mode is ``'fail'``.
+* **xfailed** if the soft assertion mode is ``'xfail'``.
+
+By default, the soft assertion mode is ``'fail'``.
 
 PARAMETERS:
 
-* **fail_mode**: The soft assertion mode. Possible values: ``fail`` or ``xfail``.
+* **fail_mode**: The soft assertion mode. Possible values: ``'fail'`` or ``'xfail'``.
 
 .. code-block:: python
 
