@@ -260,6 +260,8 @@ Assert that all collected verifications are true.
 
 Ends the test execution if any of the verifications fail.
 
+Explicit calls to this method are not required, as it gets automatically called after the end of each test.
+
 RAISES:
 
 * ``pytest.fail.Exception`` if a verification fails and soft assertion mode is ``'fail'``.
