@@ -245,7 +245,7 @@ class SoftAssert:
         # Verify match in exception constructor argument(s) and notes
         if check_match and not _search_matches(excinfo, match):
             # No match → record as soft failure
-            notes = hasattr(excinfo.value, '__notes__')
+            notes = getattr(excinfo.value, "__notes__", None)
             exc_repr = f"the exception representation '{excinfo.value}'"
             if notes:
                 exc_repr += f" or notes {notes}"
