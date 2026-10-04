@@ -1,6 +1,5 @@
 import os
 import pytest
-from _pytest.outcomes import Failed, Skipped, XFailed
 from .exception import SoftAssertionError
 from .soft_assert import SoftAssert
 
@@ -42,7 +41,7 @@ def update_test_status(
     has_wasxfail = getattr(report, "wasxfail", None) is not None
     has_xfail_marker = item.get_closest_marker("xfail") is not None
 
-    exc = Failed() if is_fail_mode else XFailed()
+    exc = pytest.fail.Exception() if is_fail_mode else pytest.xfail.Exception()
     excinfo = pytest.ExceptionInfo.from_exc_info((type(exc), exc, None))
 
     if report.outcome == "passed":

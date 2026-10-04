@@ -1,8 +1,8 @@
 import pytest
 import re
 from contextlib import contextmanager
+from pytest import ExceptionInfo
 from typing import Iterable, Literal
-from _pytest._code import ExceptionInfo
 from .exception import SoftAssertionError
 
 
