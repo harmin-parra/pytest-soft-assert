@@ -264,8 +264,8 @@ Explicit calls to this method are not required, as it gets automatically called 
 
 RAISES:
 
-* ``pytest.fail.Exception``: If a verification fails and soft assertion mode is ``'fail'``.
-* ``pytest.xfail.Exception``: If a verification fails and soft assertion mode is ``'xfail'``.
+* ``pytest.fail.Exception``: If a verification fails and soft assertion mode is ``fail``.
+* ``pytest.xfail.Exception``: If a verification fails and soft assertion mode is ``xfail``.
 
 .. code-block:: python
 
@@ -280,14 +280,14 @@ Modify the soft assertion mode at runtime.
 
 A soft assertion failure will result in the following test status:
 
-* **failed** if the soft assertion mode is ``'fail'``.
-* **xfailed** if the soft assertion mode is ``'xfail'``.
+* **failed** if the soft assertion mode is ``fail``.
+* **xfailed** if the soft assertion mode is ``xfail``.
 
-By default, the soft assertion mode is ``'fail'``.
+By default, the soft assertion mode is ``fail``.
 
 PARAMETERS:
 
-* **fail_mode**: The soft assertion mode. Possible values: ``'fail'`` or ``'xfail'``.
+* **fail_mode**: The soft assertion mode. Accepted values: ``fail`` or ``xfail``.
 
 .. code-block:: python
 
