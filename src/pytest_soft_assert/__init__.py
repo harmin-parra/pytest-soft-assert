@@ -18,10 +18,10 @@ def update_test_status(
     """
     if call.when != "call" or "soft_assert" not in item.funcargs:
         return report
-    try:
-        request = item.funcargs["request"]
-        fx_soft: SoftAssert = request.getfixturevalue("soft_assert")
-    except Exception:
+    # Get the 'soft_assert' fixture if it was declared in test signature
+    if "soft_assert" in item.fixturenames:
+        fx_soft: SoftAssert = item.funcargs["soft_assert"]
+    else:
         return report
 
     # if external_call:

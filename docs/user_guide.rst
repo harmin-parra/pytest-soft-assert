@@ -361,10 +361,10 @@ This is a code snippet that other plugins can include:
       outcome = yield
       report = outcome.get_result()
 
-      # If pytest-soft-assert is loaded, update test result status
-      if call.when == "call" and item.config.pluginmanager.has_plugin("pytest_soft_assert"):
-          try:
-              soft_assert = item.config.pluginmanager.getplugin("pytest_soft_assert")
-              report = soft_assert.update_test_status(report, item, call)
-          except Exception:
-              pass
+      if (
+          call.when == "call" and
+          "soft_assert" in item.fixturenames and
+          item.config.pluginmanager.has_plugin("pytest_soft_assert")
+      ):
+          fx_soft_assert = item.funcargs["soft_assert"]
+          report = fx_soft_assert.update_test_status(report, item, call)
