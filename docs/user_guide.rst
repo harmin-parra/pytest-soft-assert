@@ -160,7 +160,7 @@ PARAMETERS:
 soft_assert.instance_of
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-``instance_of(value: object, clazz: type, msg=None)``
+``instance_of(value: object, clazz: type, msg: str = None)``
 
 Verify a value is an instance of class.
 
@@ -361,10 +361,10 @@ This is a code snippet that other plugins can include:
       outcome = yield
       report = outcome.get_result()
 
-      if (
-          call.when == "call" and
-          "soft_assert" in item.fixturenames and
-          item.config.pluginmanager.has_plugin("pytest_soft_assert")
-      ):
-          fx_soft_assert = item.funcargs["soft_assert"]
-          report = fx_soft_assert.update_test_status(report, item, call)
+    if (
+        call.when == "call" and
+        "soft_assert" in item.fixturenames and
+        item.config.pluginmanager.has_plugin("pytest_soft_assert")
+    ):
+        pytest_soft_assert = item.config.pluginmanager.get_plugin("pytest_soft_assert")
+        report = pytest_soft_assert.update_test_status(report, item, call)
