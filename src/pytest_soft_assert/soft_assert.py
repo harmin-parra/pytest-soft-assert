@@ -327,7 +327,7 @@ class SoftAssert:
                 self._exc.add_note(_build_exception_message(
                     f"Unexpected exception: '{exc_raised}' and match: '{match}' found in {exc_repr}", msg)
                 )
-                
+
 
 def _get_matching_type(arg: type[Exception], collection: Iterable[type[[Exception]]]) -> str:
     """
